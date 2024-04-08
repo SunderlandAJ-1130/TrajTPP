@@ -1,0 +1,1071 @@
+2024-04-08 16:29:01,845 - __main__ - INFO - Log directory: ././log/TrajTPP-15-5/log-2024-04-08-16-29-01/
+2024-04-08 16:29:01,845 - __main__ - INFO - Namespace(seed=0, device=1, max_epochs=5000, use_marks=True, decoder_name='LogNormMix', rnn_type='GGRU', attention_type='GAU', use_history=True, history_size=128, use_embedding=False, embedding_size=32, trainable_affine=False, batch_size=1024, n_components=64, learning_rate=0.0001, regularization=1e-05, patience=20, num_classes=1187, num_heads=1, mark_embedding_size=128, log_dir='./log/TrajTPP', grn_decoder='GAU', dataset_name='./dataset/geolife', use_sa=True, use_timeofday=False, use_dayofweek=False, use_driver=True, pre_embedding=False, joint_type='None', time_threshold=15, trip_threshold=5, min_clip=-5.0, max_clip=3.0, use_prior=False, use_mtl=False, log_filename='log-2024-04-08-16-29-01.log', log_path='././log/TrajTPP-15-5/log-2024-04-08-16-29-01/')
+2024-04-08 16:29:01,953 - __main__ - INFO - Using GPU 1
+2024-04-08 16:29:01,954 - __main__ - INFO - load data...
+2024-04-08 16:29:07,483 - __main__ - INFO - num_drivers: 46, d_train: 20, d_val: 29, d_test: 28
+2024-04-08 16:29:07,758 - __main__ - INFO - Building model...
+2024-04-08 16:29:07,758 - __main__ - INFO - mean_log_inter_time: 1.5294513702392578, std_log_inter_time: 1.08988356590271
+2024-04-08 16:29:10,257 - __main__ - INFO - Model(
+  (rnn): RNNLayer(
+    (mark_embedding): Embedding(1187, 128)
+    (temporal_embed): Linear(in_features=1, out_features=128, bias=True)
+    (temporal_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (spatial_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (output_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (rnn): GGRU(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (mark_fc): Linear(in_features=128, out_features=128, bias=True)
+      (ggru_ln): MaybeLayerNorm(
+        (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+      )
+    )
+  )
+  (mark_layer): Sequential(
+    (0): Linear(in_features=128, out_features=1187, bias=True)
+  )
+  (driver_embedding): Embedding(46, 32)
+  (enrichment_gran): GRAN(
+    (layer_norm): MaybeLayerNorm(
+      (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+    )
+    (lin_a): Linear(in_features=128, out_features=128, bias=True)
+    (lin_c): Linear(in_features=32, out_features=128, bias=False)
+    (lin_i): Linear(in_features=128, out_features=128, bias=True)
+    (gau): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (out_proj): Linear(in_features=128, out_features=128, bias=True)
+  )
+  (decoder): TransformedDistribution(
+    (transforms): ModuleList(
+      (0): FixedAffine()
+      (1): Exp()
+    )
+    (base_dist): NormalMixtureDistribution(
+      (hypernet): Hypernet(
+        (activation): Tanh()
+        (linear_rnn): Linear(in_features=128, out_features=192, bias=False)
+        (linear_layers): ModuleList()
+      )
+    )
+  )
+  (h_mark_fc): Linear(in_features=128, out_features=128, bias=True)
+  (h_time_fc): Linear(in_features=128, out_features=128, bias=True)
+  (layer_norm_time): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+  (layer_norm_mark): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+)
+2024-04-08 16:29:10,265 - __main__ - INFO - Starting training...
+2024-04-08 16:29:13,689 - __main__ - INFO - Epoch: 1, loss_train_last_batch: 10.1620, loss_val: 9.9873, best_loss: 9.9873, impatient: 0
+2024-04-08 16:29:16,284 - __main__ - INFO - Epoch: 2, loss_train_last_batch: 9.8017, loss_val: 9.6298, best_loss: 9.6298, impatient: 0
+2024-04-08 16:29:18,893 - __main__ - INFO - Epoch: 3, loss_train_last_batch: 9.4028, loss_val: 9.3920, best_loss: 9.3920, impatient: 0
+2024-04-08 16:29:21,566 - __main__ - INFO - Epoch: 4, loss_train_last_batch: 9.3444, loss_val: 9.1692, best_loss: 9.1692, impatient: 0
+2024-04-08 16:29:24,153 - __main__ - INFO - Epoch: 5, loss_train_last_batch: 9.2439, loss_val: 8.9855, best_loss: 8.9855, impatient: 0
+2024-04-08 16:29:26,737 - __main__ - INFO - Epoch: 6, loss_train_last_batch: 8.9389, loss_val: 8.8263, best_loss: 8.8263, impatient: 0
+2024-04-08 16:29:29,314 - __main__ - INFO - Epoch: 7, loss_train_last_batch: 8.8469, loss_val: 8.6610, best_loss: 8.6610, impatient: 0
+2024-04-08 16:29:31,904 - __main__ - INFO - Epoch: 8, loss_train_last_batch: 8.2605, loss_val: 8.5195, best_loss: 8.5195, impatient: 0
+2024-04-08 16:29:34,490 - __main__ - INFO - Epoch: 9, loss_train_last_batch: 8.2408, loss_val: 8.3778, best_loss: 8.3778, impatient: 0
+2024-04-08 16:29:37,070 - __main__ - INFO - Epoch: 10, loss_train_last_batch: 7.9175, loss_val: 8.2504, best_loss: 8.2504, impatient: 0
+2024-04-08 16:29:39,652 - __main__ - INFO - Epoch: 11, loss_train_last_batch: 8.0769, loss_val: 8.1256, best_loss: 8.1256, impatient: 0
+2024-04-08 16:29:42,233 - __main__ - INFO - Epoch: 12, loss_train_last_batch: 7.7920, loss_val: 8.0183, best_loss: 8.0183, impatient: 0
+2024-04-08 16:29:44,821 - __main__ - INFO - Epoch: 13, loss_train_last_batch: 7.7638, loss_val: 7.9342, best_loss: 7.9342, impatient: 0
+2024-04-08 16:29:47,408 - __main__ - INFO - Epoch: 14, loss_train_last_batch: 7.5687, loss_val: 7.8377, best_loss: 7.8377, impatient: 0
+2024-04-08 16:29:49,991 - __main__ - INFO - Epoch: 15, loss_train_last_batch: 7.8661, loss_val: 7.7603, best_loss: 7.7603, impatient: 0
+2024-04-08 16:29:52,566 - __main__ - INFO - Epoch: 16, loss_train_last_batch: 7.6413, loss_val: 7.6943, best_loss: 7.6943, impatient: 0
+2024-04-08 16:29:55,184 - __main__ - INFO - Epoch: 17, loss_train_last_batch: 7.3081, loss_val: 7.6191, best_loss: 7.6191, impatient: 0
+2024-04-08 16:29:57,768 - __main__ - INFO - Epoch: 18, loss_train_last_batch: 7.5096, loss_val: 7.5608, best_loss: 7.5608, impatient: 0
+2024-04-08 16:30:00,357 - __main__ - INFO - Epoch: 19, loss_train_last_batch: 7.2631, loss_val: 7.5057, best_loss: 7.5057, impatient: 0
+2024-04-08 16:30:02,936 - __main__ - INFO - Epoch: 20, loss_train_last_batch: 7.2140, loss_val: 7.4611, best_loss: 7.4611, impatient: 0
+2024-04-08 16:30:05,510 - __main__ - INFO - Epoch: 21, loss_train_last_batch: 7.0141, loss_val: 7.4233, best_loss: 7.4233, impatient: 0
+2024-04-08 16:30:08,092 - __main__ - INFO - Epoch: 22, loss_train_last_batch: 6.7124, loss_val: 7.3723, best_loss: 7.3723, impatient: 0
+2024-04-08 16:30:10,672 - __main__ - INFO - Epoch: 23, loss_train_last_batch: 7.1136, loss_val: 7.3455, best_loss: 7.3455, impatient: 0
+2024-04-08 16:30:13,255 - __main__ - INFO - Epoch: 24, loss_train_last_batch: 6.8129, loss_val: 7.3095, best_loss: 7.3095, impatient: 0
+2024-04-08 16:30:15,835 - __main__ - INFO - Epoch: 25, loss_train_last_batch: 6.8482, loss_val: 7.2782, best_loss: 7.2782, impatient: 0
+2024-04-08 16:30:18,408 - __main__ - INFO - Epoch: 26, loss_train_last_batch: 6.7371, loss_val: 7.2485, best_loss: 7.2485, impatient: 0
+2024-04-08 16:30:20,992 - __main__ - INFO - Epoch: 27, loss_train_last_batch: 6.6600, loss_val: 7.2112, best_loss: 7.2112, impatient: 0
+2024-04-08 16:30:23,574 - __main__ - INFO - Epoch: 28, loss_train_last_batch: 6.6235, loss_val: 7.1965, best_loss: 7.1965, impatient: 0
+2024-04-08 16:30:26,150 - __main__ - INFO - Epoch: 29, loss_train_last_batch: 6.7106, loss_val: 7.1667, best_loss: 7.1667, impatient: 0
+2024-04-08 16:30:28,736 - __main__ - INFO - Epoch: 30, loss_train_last_batch: 6.4858, loss_val: 7.1620, best_loss: 7.1620, impatient: 0
+2024-04-08 16:30:31,317 - __main__ - INFO - Epoch: 31, loss_train_last_batch: 6.4719, loss_val: 7.1366, best_loss: 7.1366, impatient: 0
+2024-04-08 16:30:33,895 - __main__ - INFO - Epoch: 32, loss_train_last_batch: 6.6258, loss_val: 7.1085, best_loss: 7.1085, impatient: 0
+2024-04-08 16:30:36,476 - __main__ - INFO - Epoch: 33, loss_train_last_batch: 6.5413, loss_val: 7.0918, best_loss: 7.0918, impatient: 0
+2024-04-08 16:30:39,088 - __main__ - INFO - Epoch: 34, loss_train_last_batch: 6.5944, loss_val: 7.0763, best_loss: 7.0763, impatient: 0
+2024-04-08 16:30:41,674 - __main__ - INFO - Epoch: 35, loss_train_last_batch: 6.6802, loss_val: 7.0778, best_loss: 7.0763, impatient: 1
+2024-04-08 16:30:44,262 - __main__ - INFO - Epoch: 36, loss_train_last_batch: 6.6255, loss_val: 7.0570, best_loss: 7.0570, impatient: 0
+2024-04-08 16:30:46,842 - __main__ - INFO - Epoch: 37, loss_train_last_batch: 6.4127, loss_val: 7.0563, best_loss: 7.0563, impatient: 0
+2024-04-08 16:30:49,426 - __main__ - INFO - Epoch: 38, loss_train_last_batch: 6.2433, loss_val: 7.0242, best_loss: 7.0242, impatient: 0
+2024-04-08 16:30:52,005 - __main__ - INFO - Epoch: 39, loss_train_last_batch: 6.5848, loss_val: 7.0144, best_loss: 7.0144, impatient: 0
+2024-04-08 16:30:54,582 - __main__ - INFO - Epoch: 40, loss_train_last_batch: 6.0290, loss_val: 7.0047, best_loss: 7.0047, impatient: 0
+2024-04-08 16:30:57,161 - __main__ - INFO - Epoch: 41, loss_train_last_batch: 6.0582, loss_val: 7.0053, best_loss: 7.0047, impatient: 1
+2024-04-08 16:30:59,751 - __main__ - INFO - Epoch: 42, loss_train_last_batch: 6.1147, loss_val: 6.9778, best_loss: 6.9778, impatient: 0
+2024-04-08 16:31:02,334 - __main__ - INFO - Epoch: 43, loss_train_last_batch: 6.1013, loss_val: 6.9810, best_loss: 6.9778, impatient: 1
+2024-04-08 16:31:04,922 - __main__ - INFO - Epoch: 44, loss_train_last_batch: 6.0437, loss_val: 6.9703, best_loss: 6.9703, impatient: 0
+2024-04-08 16:31:07,495 - __main__ - INFO - Epoch: 45, loss_train_last_batch: 6.1660, loss_val: 6.9620, best_loss: 6.9620, impatient: 0
+2024-04-08 16:31:10,078 - __main__ - INFO - Epoch: 46, loss_train_last_batch: 6.0779, loss_val: 6.9561, best_loss: 6.9561, impatient: 0
+2024-04-08 16:31:12,664 - __main__ - INFO - Epoch: 47, loss_train_last_batch: 5.9922, loss_val: 6.9497, best_loss: 6.9497, impatient: 0
+2024-04-08 16:31:15,239 - __main__ - INFO - Epoch: 48, loss_train_last_batch: 6.2136, loss_val: 6.9636, best_loss: 6.9497, impatient: 1
+2024-04-08 16:31:17,811 - __main__ - INFO - Epoch: 49, loss_train_last_batch: 6.1454, loss_val: 6.9380, best_loss: 6.9380, impatient: 0
+2024-04-08 16:31:20,396 - __main__ - INFO - Epoch: 50, loss_train_last_batch: 5.7330, loss_val: 6.9298, best_loss: 6.9298, impatient: 0
+2024-04-08 16:31:22,968 - __main__ - INFO - Epoch: 51, loss_train_last_batch: 5.9960, loss_val: 6.9350, best_loss: 6.9298, impatient: 1
+2024-04-08 16:31:25,547 - __main__ - INFO - Epoch: 52, loss_train_last_batch: 5.6536, loss_val: 6.9180, best_loss: 6.9180, impatient: 0
+2024-04-08 16:31:28,125 - __main__ - INFO - Epoch: 53, loss_train_last_batch: 5.7661, loss_val: 6.9072, best_loss: 6.9072, impatient: 0
+2024-04-08 16:31:30,696 - __main__ - INFO - Epoch: 54, loss_train_last_batch: 6.0508, loss_val: 6.9164, best_loss: 6.9072, impatient: 1
+2024-04-08 16:31:33,278 - __main__ - INFO - Epoch: 55, loss_train_last_batch: 5.9250, loss_val: 6.8889, best_loss: 6.8889, impatient: 0
+2024-04-08 16:31:35,880 - __main__ - INFO - Epoch: 56, loss_train_last_batch: 5.6358, loss_val: 6.9015, best_loss: 6.8889, impatient: 1
+2024-04-08 16:31:38,452 - __main__ - INFO - Epoch: 57, loss_train_last_batch: 5.7326, loss_val: 6.8925, best_loss: 6.8889, impatient: 2
+2024-04-08 16:31:41,036 - __main__ - INFO - Epoch: 58, loss_train_last_batch: 5.9575, loss_val: 6.8865, best_loss: 6.8865, impatient: 0
+2024-04-08 16:31:43,617 - __main__ - INFO - Epoch: 59, loss_train_last_batch: 6.0252, loss_val: 6.8889, best_loss: 6.8865, impatient: 1
+2024-04-08 16:31:46,203 - __main__ - INFO - Epoch: 60, loss_train_last_batch: 5.7324, loss_val: 6.8841, best_loss: 6.8841, impatient: 0
+2024-04-08 16:31:48,786 - __main__ - INFO - Epoch: 61, loss_train_last_batch: 5.8543, loss_val: 6.8708, best_loss: 6.8708, impatient: 0
+2024-04-08 16:31:51,356 - __main__ - INFO - Epoch: 62, loss_train_last_batch: 5.7884, loss_val: 6.8802, best_loss: 6.8708, impatient: 1
+2024-04-08 16:31:53,933 - __main__ - INFO - Epoch: 63, loss_train_last_batch: 5.4821, loss_val: 6.8849, best_loss: 6.8708, impatient: 2
+2024-04-08 16:31:56,504 - __main__ - INFO - Epoch: 64, loss_train_last_batch: 5.5901, loss_val: 6.8725, best_loss: 6.8708, impatient: 3
+2024-04-08 16:31:59,077 - __main__ - INFO - Epoch: 65, loss_train_last_batch: 5.7896, loss_val: 6.8705, best_loss: 6.8705, impatient: 0
+2024-04-08 16:32:01,652 - __main__ - INFO - Epoch: 66, loss_train_last_batch: 5.8124, loss_val: 6.8732, best_loss: 6.8705, impatient: 1
+2024-04-08 16:32:04,226 - __main__ - INFO - Epoch: 67, loss_train_last_batch: 5.7513, loss_val: 6.8508, best_loss: 6.8508, impatient: 0
+2024-04-08 16:32:06,796 - __main__ - INFO - Epoch: 68, loss_train_last_batch: 5.8488, loss_val: 6.8620, best_loss: 6.8508, impatient: 1
+2024-04-08 16:32:09,365 - __main__ - INFO - Epoch: 69, loss_train_last_batch: 5.3849, loss_val: 6.8634, best_loss: 6.8508, impatient: 2
+2024-04-08 16:32:11,936 - __main__ - INFO - Epoch: 70, loss_train_last_batch: 5.7727, loss_val: 6.8576, best_loss: 6.8508, impatient: 3
+2024-04-08 16:32:14,515 - __main__ - INFO - Epoch: 71, loss_train_last_batch: 5.7875, loss_val: 6.8657, best_loss: 6.8508, impatient: 4
+2024-04-08 16:32:17,079 - __main__ - INFO - Epoch: 72, loss_train_last_batch: 5.9337, loss_val: 6.8777, best_loss: 6.8508, impatient: 5
+2024-04-08 16:32:19,641 - __main__ - INFO - Epoch: 73, loss_train_last_batch: 5.5514, loss_val: 6.8551, best_loss: 6.8508, impatient: 6
+2024-04-08 16:32:22,209 - __main__ - INFO - Epoch: 74, loss_train_last_batch: 5.3717, loss_val: 6.8527, best_loss: 6.8508, impatient: 7
+2024-04-08 16:32:24,780 - __main__ - INFO - Epoch: 75, loss_train_last_batch: 5.6780, loss_val: 6.8583, best_loss: 6.8508, impatient: 8
+2024-04-08 16:32:27,351 - __main__ - INFO - Epoch: 76, loss_train_last_batch: 5.5081, loss_val: 6.8855, best_loss: 6.8508, impatient: 9
+2024-04-08 16:32:29,930 - __main__ - INFO - Epoch: 77, loss_train_last_batch: 5.4351, loss_val: 6.8459, best_loss: 6.8459, impatient: 0
+2024-04-08 16:32:32,507 - __main__ - INFO - Epoch: 78, loss_train_last_batch: 5.4266, loss_val: 6.8661, best_loss: 6.8459, impatient: 1
+2024-04-08 16:32:35,086 - __main__ - INFO - Epoch: 79, loss_train_last_batch: 5.3325, loss_val: 6.8605, best_loss: 6.8459, impatient: 2
+2024-04-08 16:32:37,658 - __main__ - INFO - Epoch: 80, loss_train_last_batch: 5.4778, loss_val: 6.8611, best_loss: 6.8459, impatient: 3
+2024-04-08 16:32:40,229 - __main__ - INFO - Epoch: 81, loss_train_last_batch: 5.7102, loss_val: 6.8519, best_loss: 6.8459, impatient: 4
+2024-04-08 16:32:42,906 - __main__ - INFO - Epoch: 82, loss_train_last_batch: 5.4483, loss_val: 6.8734, best_loss: 6.8459, impatient: 5
+2024-04-08 16:32:45,482 - __main__ - INFO - Epoch: 83, loss_train_last_batch: 5.5037, loss_val: 6.8612, best_loss: 6.8459, impatient: 6
+2024-04-08 16:32:48,083 - __main__ - INFO - Epoch: 84, loss_train_last_batch: 5.4508, loss_val: 6.8558, best_loss: 6.8459, impatient: 7
+2024-04-08 16:32:50,657 - __main__ - INFO - Epoch: 85, loss_train_last_batch: 5.4596, loss_val: 6.8648, best_loss: 6.8459, impatient: 8
+2024-04-08 16:32:53,230 - __main__ - INFO - Epoch: 86, loss_train_last_batch: 5.3465, loss_val: 6.8513, best_loss: 6.8459, impatient: 9
+2024-04-08 16:32:55,807 - __main__ - INFO - Epoch: 87, loss_train_last_batch: 5.3561, loss_val: 6.8818, best_loss: 6.8459, impatient: 10
+2024-04-08 16:32:58,386 - __main__ - INFO - Epoch: 88, loss_train_last_batch: 4.9603, loss_val: 6.8686, best_loss: 6.8459, impatient: 11
+2024-04-08 16:33:00,967 - __main__ - INFO - Epoch: 89, loss_train_last_batch: 5.3658, loss_val: 6.8866, best_loss: 6.8459, impatient: 12
+2024-04-08 16:33:03,535 - __main__ - INFO - Epoch: 90, loss_train_last_batch: 5.0757, loss_val: 6.8666, best_loss: 6.8459, impatient: 13
+2024-04-08 16:33:06,113 - __main__ - INFO - Epoch: 91, loss_train_last_batch: 5.0296, loss_val: 6.8664, best_loss: 6.8459, impatient: 14
+2024-04-08 16:33:08,684 - __main__ - INFO - Epoch: 92, loss_train_last_batch: 5.1718, loss_val: 6.8852, best_loss: 6.8459, impatient: 15
+2024-04-08 16:33:11,261 - __main__ - INFO - Epoch: 93, loss_train_last_batch: 4.9566, loss_val: 6.8836, best_loss: 6.8459, impatient: 16
+2024-04-08 16:33:13,830 - __main__ - INFO - Epoch: 94, loss_train_last_batch: 4.9863, loss_val: 6.8945, best_loss: 6.8459, impatient: 17
+2024-04-08 16:33:16,405 - __main__ - INFO - Epoch: 95, loss_train_last_batch: 5.4367, loss_val: 6.8961, best_loss: 6.8459, impatient: 18
+2024-04-08 16:33:18,965 - __main__ - INFO - Epoch: 96, loss_train_last_batch: 4.9928, loss_val: 6.8810, best_loss: 6.8459, impatient: 19
+2024-04-08 16:33:21,540 - __main__ - INFO - Breaking due to early stopping at epoch 96
+2024-04-08 16:34:02,139 - __main__ - INFO - Negative log-likelihood:
+ - Train: 5.287
+ - Val:   6.846
+ - Test:  7.428
+    - Mark NLL: 4.157
+    - Time NLL: 3.271
+2024-04-08 16:34:43,293 - __main__ - INFO - acc@1: 0.334
+2024-04-08 16:34:43,487 - __main__ - INFO - acc@5: 0.574
+2024-04-08 16:34:43,676 - __main__ - INFO - acc@10: 0.613
+2024-04-08 16:34:43,678 - __main__ - INFO - f1_score: 0.256
+2024-04-08 16:34:43,746 - __main__ - INFO - Recall@1: 0.334
+2024-04-08 16:34:43,746 - __main__ - INFO - Recall@5: 0.574
+2024-04-08 16:34:43,746 - __main__ - INFO - Recall@10: 0.613
+2024-04-08 16:34:43,746 - __main__ - INFO - NDCG@10: 0.481
+2024-04-08 16:34:43,746 - __main__ - INFO - MRR@10: 0.437
+2024-04-08 16:34:43,842 - __main__ - INFO - finished...
+2024-04-08 16:34:44,031 - __main__ - INFO - Log directory: ././log/TrajTPP-15-5/log-2024-04-08-16-34-44/
+2024-04-08 16:34:44,031 - __main__ - INFO - Namespace(seed=1, device=1, max_epochs=5000, use_marks=True, decoder_name='LogNormMix', rnn_type='GGRU', attention_type='GAU', use_history=True, history_size=128, use_embedding=False, embedding_size=32, trainable_affine=False, batch_size=1024, n_components=64, learning_rate=0.0001, regularization=1e-05, patience=20, num_classes=1187, num_heads=1, mark_embedding_size=128, log_dir='./log/TrajTPP', grn_decoder='GAU', dataset_name='./dataset/geolife', use_sa=True, use_timeofday=False, use_dayofweek=False, use_driver=True, pre_embedding=False, joint_type='None', time_threshold=15, trip_threshold=5, min_clip=-5.0, max_clip=3.0, use_prior=False, use_mtl=False, log_filename='log-2024-04-08-16-34-44.log', log_path='././log/TrajTPP-15-5/log-2024-04-08-16-34-44/', mean_in_train=tensor(1.5295, device='cuda:1'), std_in_train=tensor(1.0899, device='cuda:1'))
+2024-04-08 16:34:44,035 - __main__ - INFO - Using GPU 1
+2024-04-08 16:34:44,036 - __main__ - INFO - load data...
+2024-04-08 16:34:46,810 - __main__ - INFO - num_drivers: 46, d_train: 20, d_val: 29, d_test: 28
+2024-04-08 16:34:47,096 - __main__ - INFO - Building model...
+2024-04-08 16:34:47,097 - __main__ - INFO - mean_log_inter_time: 1.5294513702392578, std_log_inter_time: 1.08988356590271
+2024-04-08 16:34:47,472 - __main__ - INFO - Model(
+  (rnn): RNNLayer(
+    (mark_embedding): Embedding(1187, 128)
+    (temporal_embed): Linear(in_features=1, out_features=128, bias=True)
+    (temporal_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (spatial_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (output_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (rnn): GGRU(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (mark_fc): Linear(in_features=128, out_features=128, bias=True)
+      (ggru_ln): MaybeLayerNorm(
+        (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+      )
+    )
+  )
+  (mark_layer): Sequential(
+    (0): Linear(in_features=128, out_features=1187, bias=True)
+  )
+  (driver_embedding): Embedding(46, 32)
+  (enrichment_gran): GRAN(
+    (layer_norm): MaybeLayerNorm(
+      (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+    )
+    (lin_a): Linear(in_features=128, out_features=128, bias=True)
+    (lin_c): Linear(in_features=32, out_features=128, bias=False)
+    (lin_i): Linear(in_features=128, out_features=128, bias=True)
+    (gau): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (out_proj): Linear(in_features=128, out_features=128, bias=True)
+  )
+  (decoder): TransformedDistribution(
+    (transforms): ModuleList(
+      (0): FixedAffine()
+      (1): Exp()
+    )
+    (base_dist): NormalMixtureDistribution(
+      (hypernet): Hypernet(
+        (activation): Tanh()
+        (linear_rnn): Linear(in_features=128, out_features=192, bias=False)
+        (linear_layers): ModuleList()
+      )
+    )
+  )
+  (h_mark_fc): Linear(in_features=128, out_features=128, bias=True)
+  (h_time_fc): Linear(in_features=128, out_features=128, bias=True)
+  (layer_norm_time): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+  (layer_norm_mark): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+)
+2024-04-08 16:34:47,480 - __main__ - INFO - Starting training...
+2024-04-08 16:34:50,150 - __main__ - INFO - Epoch: 1, loss_train_last_batch: 10.2647, loss_val: 10.2016, best_loss: 10.2016, impatient: 0
+2024-04-08 16:34:52,796 - __main__ - INFO - Epoch: 2, loss_train_last_batch: 9.9565, loss_val: 9.8378, best_loss: 9.8378, impatient: 0
+2024-04-08 16:34:55,440 - __main__ - INFO - Epoch: 3, loss_train_last_batch: 9.4256, loss_val: 9.5661, best_loss: 9.5661, impatient: 0
+2024-04-08 16:34:58,079 - __main__ - INFO - Epoch: 4, loss_train_last_batch: 9.4228, loss_val: 9.3344, best_loss: 9.3344, impatient: 0
+2024-04-08 16:35:00,723 - __main__ - INFO - Epoch: 5, loss_train_last_batch: 9.2312, loss_val: 9.1346, best_loss: 9.1346, impatient: 0
+2024-04-08 16:35:03,370 - __main__ - INFO - Epoch: 6, loss_train_last_batch: 8.9771, loss_val: 8.9710, best_loss: 8.9710, impatient: 0
+2024-04-08 16:35:06,009 - __main__ - INFO - Epoch: 7, loss_train_last_batch: 8.8775, loss_val: 8.8157, best_loss: 8.8157, impatient: 0
+2024-04-08 16:35:08,659 - __main__ - INFO - Epoch: 8, loss_train_last_batch: 8.3269, loss_val: 8.6637, best_loss: 8.6637, impatient: 0
+2024-04-08 16:35:11,302 - __main__ - INFO - Epoch: 9, loss_train_last_batch: 8.3219, loss_val: 8.5194, best_loss: 8.5194, impatient: 0
+2024-04-08 16:35:13,948 - __main__ - INFO - Epoch: 10, loss_train_last_batch: 8.0024, loss_val: 8.3673, best_loss: 8.3673, impatient: 0
+2024-04-08 16:35:16,592 - __main__ - INFO - Epoch: 11, loss_train_last_batch: 8.1640, loss_val: 8.2617, best_loss: 8.2617, impatient: 0
+2024-04-08 16:35:19,232 - __main__ - INFO - Epoch: 12, loss_train_last_batch: 7.8630, loss_val: 8.1164, best_loss: 8.1164, impatient: 0
+2024-04-08 16:35:21,882 - __main__ - INFO - Epoch: 13, loss_train_last_batch: 7.8203, loss_val: 8.0212, best_loss: 8.0212, impatient: 0
+2024-04-08 16:35:24,524 - __main__ - INFO - Epoch: 14, loss_train_last_batch: 7.6426, loss_val: 7.9140, best_loss: 7.9140, impatient: 0
+2024-04-08 16:35:27,170 - __main__ - INFO - Epoch: 15, loss_train_last_batch: 7.9398, loss_val: 7.8331, best_loss: 7.8331, impatient: 0
+2024-04-08 16:35:29,805 - __main__ - INFO - Epoch: 16, loss_train_last_batch: 7.6293, loss_val: 7.7606, best_loss: 7.7606, impatient: 0
+2024-04-08 16:35:32,562 - __main__ - INFO - Epoch: 17, loss_train_last_batch: 7.3925, loss_val: 7.6738, best_loss: 7.6738, impatient: 0
+2024-04-08 16:35:35,218 - __main__ - INFO - Epoch: 18, loss_train_last_batch: 7.5615, loss_val: 7.6449, best_loss: 7.6449, impatient: 0
+2024-04-08 16:35:37,902 - __main__ - INFO - Epoch: 19, loss_train_last_batch: 7.3184, loss_val: 7.5592, best_loss: 7.5592, impatient: 0
+2024-04-08 16:35:40,542 - __main__ - INFO - Epoch: 20, loss_train_last_batch: 7.1996, loss_val: 7.5010, best_loss: 7.5010, impatient: 0
+2024-04-08 16:35:43,184 - __main__ - INFO - Epoch: 21, loss_train_last_batch: 7.0694, loss_val: 7.4424, best_loss: 7.4424, impatient: 0
+2024-04-08 16:35:45,832 - __main__ - INFO - Epoch: 22, loss_train_last_batch: 6.7935, loss_val: 7.4195, best_loss: 7.4195, impatient: 0
+2024-04-08 16:35:48,474 - __main__ - INFO - Epoch: 23, loss_train_last_batch: 7.1261, loss_val: 7.3897, best_loss: 7.3897, impatient: 0
+2024-04-08 16:35:51,121 - __main__ - INFO - Epoch: 24, loss_train_last_batch: 6.8228, loss_val: 7.3385, best_loss: 7.3385, impatient: 0
+2024-04-08 16:35:53,765 - __main__ - INFO - Epoch: 25, loss_train_last_batch: 6.9597, loss_val: 7.3049, best_loss: 7.3049, impatient: 0
+2024-04-08 16:35:56,402 - __main__ - INFO - Epoch: 26, loss_train_last_batch: 6.7822, loss_val: 7.2605, best_loss: 7.2605, impatient: 0
+2024-04-08 16:35:59,052 - __main__ - INFO - Epoch: 27, loss_train_last_batch: 6.6550, loss_val: 7.2306, best_loss: 7.2306, impatient: 0
+2024-04-08 16:36:01,701 - __main__ - INFO - Epoch: 28, loss_train_last_batch: 6.7247, loss_val: 7.2115, best_loss: 7.2115, impatient: 0
+2024-04-08 16:36:04,342 - __main__ - INFO - Epoch: 29, loss_train_last_batch: 6.8212, loss_val: 7.1897, best_loss: 7.1897, impatient: 0
+2024-04-08 16:36:06,990 - __main__ - INFO - Epoch: 30, loss_train_last_batch: 6.5844, loss_val: 7.1564, best_loss: 7.1564, impatient: 0
+2024-04-08 16:36:09,633 - __main__ - INFO - Epoch: 31, loss_train_last_batch: 6.5675, loss_val: 7.1346, best_loss: 7.1346, impatient: 0
+2024-04-08 16:36:12,276 - __main__ - INFO - Epoch: 32, loss_train_last_batch: 6.6171, loss_val: 7.1112, best_loss: 7.1112, impatient: 0
+2024-04-08 16:36:14,919 - __main__ - INFO - Epoch: 33, loss_train_last_batch: 6.6287, loss_val: 7.0960, best_loss: 7.0960, impatient: 0
+2024-04-08 16:36:17,570 - __main__ - INFO - Epoch: 34, loss_train_last_batch: 6.5878, loss_val: 7.0861, best_loss: 7.0861, impatient: 0
+2024-04-08 16:36:20,220 - __main__ - INFO - Epoch: 35, loss_train_last_batch: 6.6741, loss_val: 7.0783, best_loss: 7.0783, impatient: 0
+2024-04-08 16:36:22,875 - __main__ - INFO - Epoch: 36, loss_train_last_batch: 6.6375, loss_val: 7.0555, best_loss: 7.0555, impatient: 0
+2024-04-08 16:36:25,516 - __main__ - INFO - Epoch: 37, loss_train_last_batch: 6.4732, loss_val: 7.0526, best_loss: 7.0526, impatient: 0
+2024-04-08 16:36:28,165 - __main__ - INFO - Epoch: 38, loss_train_last_batch: 6.2248, loss_val: 7.0302, best_loss: 7.0302, impatient: 0
+2024-04-08 16:36:30,806 - __main__ - INFO - Epoch: 39, loss_train_last_batch: 6.5269, loss_val: 7.0180, best_loss: 7.0180, impatient: 0
+2024-04-08 16:36:33,444 - __main__ - INFO - Epoch: 40, loss_train_last_batch: 6.0606, loss_val: 7.0197, best_loss: 7.0180, impatient: 1
+2024-04-08 16:36:36,087 - __main__ - INFO - Epoch: 41, loss_train_last_batch: 6.0809, loss_val: 6.9903, best_loss: 6.9903, impatient: 0
+2024-04-08 16:36:38,729 - __main__ - INFO - Epoch: 42, loss_train_last_batch: 6.1028, loss_val: 6.9962, best_loss: 6.9903, impatient: 1
+2024-04-08 16:36:41,380 - __main__ - INFO - Epoch: 43, loss_train_last_batch: 6.0864, loss_val: 6.9763, best_loss: 6.9763, impatient: 0
+2024-04-08 16:36:44,026 - __main__ - INFO - Epoch: 44, loss_train_last_batch: 6.0449, loss_val: 6.9907, best_loss: 6.9763, impatient: 1
+2024-04-08 16:36:46,669 - __main__ - INFO - Epoch: 45, loss_train_last_batch: 6.1848, loss_val: 6.9642, best_loss: 6.9642, impatient: 0
+2024-04-08 16:36:49,317 - __main__ - INFO - Epoch: 46, loss_train_last_batch: 6.0524, loss_val: 6.9543, best_loss: 6.9543, impatient: 0
+2024-04-08 16:36:51,965 - __main__ - INFO - Epoch: 47, loss_train_last_batch: 6.0976, loss_val: 6.9520, best_loss: 6.9520, impatient: 0
+2024-04-08 16:36:54,607 - __main__ - INFO - Epoch: 48, loss_train_last_batch: 6.1837, loss_val: 6.9479, best_loss: 6.9479, impatient: 0
+2024-04-08 16:36:57,243 - __main__ - INFO - Epoch: 49, loss_train_last_batch: 6.1031, loss_val: 6.9379, best_loss: 6.9379, impatient: 0
+2024-04-08 16:36:59,889 - __main__ - INFO - Epoch: 50, loss_train_last_batch: 5.6988, loss_val: 6.9296, best_loss: 6.9296, impatient: 0
+2024-04-08 16:37:02,532 - __main__ - INFO - Epoch: 51, loss_train_last_batch: 5.9433, loss_val: 6.9197, best_loss: 6.9197, impatient: 0
+2024-04-08 16:37:05,168 - __main__ - INFO - Epoch: 52, loss_train_last_batch: 5.6087, loss_val: 6.9225, best_loss: 6.9197, impatient: 1
+2024-04-08 16:37:07,812 - __main__ - INFO - Epoch: 53, loss_train_last_batch: 5.7510, loss_val: 6.9054, best_loss: 6.9054, impatient: 0
+2024-04-08 16:37:10,450 - __main__ - INFO - Epoch: 54, loss_train_last_batch: 6.0115, loss_val: 6.9180, best_loss: 6.9054, impatient: 1
+2024-04-08 16:37:13,084 - __main__ - INFO - Epoch: 55, loss_train_last_batch: 5.9417, loss_val: 6.9166, best_loss: 6.9054, impatient: 2
+2024-04-08 16:37:15,741 - __main__ - INFO - Epoch: 56, loss_train_last_batch: 5.6206, loss_val: 6.8992, best_loss: 6.8992, impatient: 0
+2024-04-08 16:37:18,450 - __main__ - INFO - Epoch: 57, loss_train_last_batch: 5.7351, loss_val: 6.8951, best_loss: 6.8951, impatient: 0
+2024-04-08 16:37:21,103 - __main__ - INFO - Epoch: 58, loss_train_last_batch: 5.9037, loss_val: 6.9184, best_loss: 6.8951, impatient: 1
+2024-04-08 16:37:23,769 - __main__ - INFO - Epoch: 59, loss_train_last_batch: 5.9896, loss_val: 6.8914, best_loss: 6.8914, impatient: 0
+2024-04-08 16:37:26,421 - __main__ - INFO - Epoch: 60, loss_train_last_batch: 5.6992, loss_val: 6.8915, best_loss: 6.8914, impatient: 1
+2024-04-08 16:37:29,080 - __main__ - INFO - Epoch: 61, loss_train_last_batch: 5.8243, loss_val: 6.8768, best_loss: 6.8768, impatient: 0
+2024-04-08 16:37:31,729 - __main__ - INFO - Epoch: 62, loss_train_last_batch: 5.7598, loss_val: 6.8979, best_loss: 6.8768, impatient: 1
+2024-04-08 16:37:34,388 - __main__ - INFO - Epoch: 63, loss_train_last_batch: 5.5329, loss_val: 6.8715, best_loss: 6.8715, impatient: 0
+2024-04-08 16:37:37,035 - __main__ - INFO - Epoch: 64, loss_train_last_batch: 5.6043, loss_val: 6.8905, best_loss: 6.8715, impatient: 1
+2024-04-08 16:37:39,685 - __main__ - INFO - Epoch: 65, loss_train_last_batch: 5.7736, loss_val: 6.8650, best_loss: 6.8650, impatient: 0
+2024-04-08 16:37:42,334 - __main__ - INFO - Epoch: 66, loss_train_last_batch: 5.8759, loss_val: 6.8939, best_loss: 6.8650, impatient: 1
+2024-04-08 16:37:44,977 - __main__ - INFO - Epoch: 67, loss_train_last_batch: 5.7180, loss_val: 6.8810, best_loss: 6.8650, impatient: 2
+2024-04-08 16:37:47,632 - __main__ - INFO - Epoch: 68, loss_train_last_batch: 5.7579, loss_val: 6.8581, best_loss: 6.8581, impatient: 0
+2024-04-08 16:37:50,272 - __main__ - INFO - Epoch: 69, loss_train_last_batch: 5.5147, loss_val: 6.8667, best_loss: 6.8581, impatient: 1
+2024-04-08 16:37:52,915 - __main__ - INFO - Epoch: 70, loss_train_last_batch: 5.8271, loss_val: 6.8664, best_loss: 6.8581, impatient: 2
+2024-04-08 16:37:55,569 - __main__ - INFO - Epoch: 71, loss_train_last_batch: 5.7717, loss_val: 6.8776, best_loss: 6.8581, impatient: 3
+2024-04-08 16:37:58,210 - __main__ - INFO - Epoch: 72, loss_train_last_batch: 5.9227, loss_val: 6.8731, best_loss: 6.8581, impatient: 4
+2024-04-08 16:38:00,849 - __main__ - INFO - Epoch: 73, loss_train_last_batch: 5.4282, loss_val: 6.8718, best_loss: 6.8581, impatient: 5
+2024-04-08 16:38:03,492 - __main__ - INFO - Epoch: 74, loss_train_last_batch: 5.3420, loss_val: 6.8665, best_loss: 6.8581, impatient: 6
+2024-04-08 16:38:06,147 - __main__ - INFO - Epoch: 75, loss_train_last_batch: 5.6692, loss_val: 6.8576, best_loss: 6.8576, impatient: 0
+2024-04-08 16:38:08,800 - __main__ - INFO - Epoch: 76, loss_train_last_batch: 5.5850, loss_val: 6.8589, best_loss: 6.8576, impatient: 1
+2024-04-08 16:38:11,453 - __main__ - INFO - Epoch: 77, loss_train_last_batch: 5.3986, loss_val: 6.8743, best_loss: 6.8576, impatient: 2
+2024-04-08 16:38:14,106 - __main__ - INFO - Epoch: 78, loss_train_last_batch: 5.5319, loss_val: 6.8598, best_loss: 6.8576, impatient: 3
+2024-04-08 16:38:16,761 - __main__ - INFO - Epoch: 79, loss_train_last_batch: 5.3355, loss_val: 6.8619, best_loss: 6.8576, impatient: 4
+2024-04-08 16:38:19,416 - __main__ - INFO - Epoch: 80, loss_train_last_batch: 5.4424, loss_val: 6.8529, best_loss: 6.8529, impatient: 0
+2024-04-08 16:38:22,063 - __main__ - INFO - Epoch: 81, loss_train_last_batch: 5.6769, loss_val: 6.8628, best_loss: 6.8529, impatient: 1
+2024-04-08 16:38:24,710 - __main__ - INFO - Epoch: 82, loss_train_last_batch: 5.5250, loss_val: 6.8617, best_loss: 6.8529, impatient: 2
+2024-04-08 16:38:27,351 - __main__ - INFO - Epoch: 83, loss_train_last_batch: 5.5177, loss_val: 6.8639, best_loss: 6.8529, impatient: 3
+2024-04-08 16:38:30,006 - __main__ - INFO - Epoch: 84, loss_train_last_batch: 5.4640, loss_val: 6.8788, best_loss: 6.8529, impatient: 4
+2024-04-08 16:38:32,664 - __main__ - INFO - Epoch: 85, loss_train_last_batch: 5.4708, loss_val: 6.8550, best_loss: 6.8529, impatient: 5
+2024-04-08 16:38:35,311 - __main__ - INFO - Epoch: 86, loss_train_last_batch: 5.2685, loss_val: 6.8684, best_loss: 6.8529, impatient: 6
+2024-04-08 16:38:37,964 - __main__ - INFO - Epoch: 87, loss_train_last_batch: 5.3364, loss_val: 6.8803, best_loss: 6.8529, impatient: 7
+2024-04-08 16:38:40,616 - __main__ - INFO - Epoch: 88, loss_train_last_batch: 5.0107, loss_val: 6.8645, best_loss: 6.8529, impatient: 8
+2024-04-08 16:38:43,269 - __main__ - INFO - Epoch: 89, loss_train_last_batch: 5.3157, loss_val: 6.8824, best_loss: 6.8529, impatient: 9
+2024-04-08 16:38:45,913 - __main__ - INFO - Epoch: 90, loss_train_last_batch: 5.0420, loss_val: 6.8542, best_loss: 6.8529, impatient: 10
+2024-04-08 16:38:48,573 - __main__ - INFO - Epoch: 91, loss_train_last_batch: 5.0308, loss_val: 6.8824, best_loss: 6.8529, impatient: 11
+2024-04-08 16:38:51,218 - __main__ - INFO - Epoch: 92, loss_train_last_batch: 5.1979, loss_val: 6.8828, best_loss: 6.8529, impatient: 12
+2024-04-08 16:38:53,869 - __main__ - INFO - Epoch: 93, loss_train_last_batch: 4.8662, loss_val: 6.9016, best_loss: 6.8529, impatient: 13
+2024-04-08 16:38:56,509 - __main__ - INFO - Epoch: 94, loss_train_last_batch: 4.9744, loss_val: 6.8792, best_loss: 6.8529, impatient: 14
+2024-04-08 16:38:59,161 - __main__ - INFO - Epoch: 95, loss_train_last_batch: 5.4032, loss_val: 6.8941, best_loss: 6.8529, impatient: 15
+2024-04-08 16:39:01,809 - __main__ - INFO - Epoch: 96, loss_train_last_batch: 5.0192, loss_val: 6.9029, best_loss: 6.8529, impatient: 16
+2024-04-08 16:39:04,486 - __main__ - INFO - Epoch: 97, loss_train_last_batch: 4.9595, loss_val: 6.8975, best_loss: 6.8529, impatient: 17
+2024-04-08 16:39:07,140 - __main__ - INFO - Epoch: 98, loss_train_last_batch: 5.2619, loss_val: 6.8962, best_loss: 6.8529, impatient: 18
+2024-04-08 16:39:09,792 - __main__ - INFO - Epoch: 99, loss_train_last_batch: 4.9466, loss_val: 6.8774, best_loss: 6.8529, impatient: 19
+2024-04-08 16:39:12,449 - __main__ - INFO - Breaking due to early stopping at epoch 99
+2024-04-08 16:39:53,460 - __main__ - INFO - Negative log-likelihood:
+ - Train: 5.224
+ - Val:   6.853
+ - Test:  7.315
+    - Mark NLL: 4.099
+    - Time NLL: 3.217
+2024-04-08 16:40:34,581 - __main__ - INFO - acc@1: 0.337
+2024-04-08 16:40:34,770 - __main__ - INFO - acc@5: 0.587
+2024-04-08 16:40:34,959 - __main__ - INFO - acc@10: 0.629
+2024-04-08 16:40:34,961 - __main__ - INFO - f1_score: 0.245
+2024-04-08 16:40:35,027 - __main__ - INFO - Recall@1: 0.337
+2024-04-08 16:40:35,028 - __main__ - INFO - Recall@5: 0.587
+2024-04-08 16:40:35,028 - __main__ - INFO - Recall@10: 0.629
+2024-04-08 16:40:35,028 - __main__ - INFO - NDCG@10: 0.488
+2024-04-08 16:40:35,028 - __main__ - INFO - MRR@10: 0.442
+2024-04-08 16:40:35,124 - __main__ - INFO - finished...
+2024-04-08 16:40:35,367 - __main__ - INFO - Log directory: ././log/TrajTPP-15-5/log-2024-04-08-16-40-35/
+2024-04-08 16:40:35,370 - __main__ - INFO - Namespace(seed=2, device=1, max_epochs=5000, use_marks=True, decoder_name='LogNormMix', rnn_type='GGRU', attention_type='GAU', use_history=True, history_size=128, use_embedding=False, embedding_size=32, trainable_affine=False, batch_size=1024, n_components=64, learning_rate=0.0001, regularization=1e-05, patience=20, num_classes=1187, num_heads=1, mark_embedding_size=128, log_dir='./log/TrajTPP', grn_decoder='GAU', dataset_name='./dataset/geolife', use_sa=True, use_timeofday=False, use_dayofweek=False, use_driver=True, pre_embedding=False, joint_type='None', time_threshold=15, trip_threshold=5, min_clip=-5.0, max_clip=3.0, use_prior=False, use_mtl=False, log_filename='log-2024-04-08-16-40-35.log', log_path='././log/TrajTPP-15-5/log-2024-04-08-16-40-35/', mean_in_train=tensor(1.5295, device='cuda:1'), std_in_train=tensor(1.0899, device='cuda:1'))
+2024-04-08 16:40:35,376 - __main__ - INFO - Using GPU 1
+2024-04-08 16:40:35,376 - __main__ - INFO - load data...
+2024-04-08 16:40:38,216 - __main__ - INFO - num_drivers: 46, d_train: 20, d_val: 29, d_test: 28
+2024-04-08 16:40:38,506 - __main__ - INFO - Building model...
+2024-04-08 16:40:38,507 - __main__ - INFO - mean_log_inter_time: 1.5294513702392578, std_log_inter_time: 1.08988356590271
+2024-04-08 16:40:38,874 - __main__ - INFO - Model(
+  (rnn): RNNLayer(
+    (mark_embedding): Embedding(1187, 128)
+    (temporal_embed): Linear(in_features=1, out_features=128, bias=True)
+    (temporal_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (spatial_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (output_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (rnn): GGRU(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (mark_fc): Linear(in_features=128, out_features=128, bias=True)
+      (ggru_ln): MaybeLayerNorm(
+        (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+      )
+    )
+  )
+  (mark_layer): Sequential(
+    (0): Linear(in_features=128, out_features=1187, bias=True)
+  )
+  (driver_embedding): Embedding(46, 32)
+  (enrichment_gran): GRAN(
+    (layer_norm): MaybeLayerNorm(
+      (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+    )
+    (lin_a): Linear(in_features=128, out_features=128, bias=True)
+    (lin_c): Linear(in_features=32, out_features=128, bias=False)
+    (lin_i): Linear(in_features=128, out_features=128, bias=True)
+    (gau): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (out_proj): Linear(in_features=128, out_features=128, bias=True)
+  )
+  (decoder): TransformedDistribution(
+    (transforms): ModuleList(
+      (0): FixedAffine()
+      (1): Exp()
+    )
+    (base_dist): NormalMixtureDistribution(
+      (hypernet): Hypernet(
+        (activation): Tanh()
+        (linear_rnn): Linear(in_features=128, out_features=192, bias=False)
+        (linear_layers): ModuleList()
+      )
+    )
+  )
+  (h_mark_fc): Linear(in_features=128, out_features=128, bias=True)
+  (h_time_fc): Linear(in_features=128, out_features=128, bias=True)
+  (layer_norm_time): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+  (layer_norm_mark): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+)
+2024-04-08 16:40:38,882 - __main__ - INFO - Starting training...
+2024-04-08 16:40:41,583 - __main__ - INFO - Epoch: 1, loss_train_last_batch: 10.2526, loss_val: 10.2025, best_loss: 10.2025, impatient: 0
+2024-04-08 16:40:44,257 - __main__ - INFO - Epoch: 2, loss_train_last_batch: 9.9219, loss_val: 9.8852, best_loss: 9.8852, impatient: 0
+2024-04-08 16:40:46,924 - __main__ - INFO - Epoch: 3, loss_train_last_batch: 9.4273, loss_val: 9.6453, best_loss: 9.6453, impatient: 0
+2024-04-08 16:40:49,588 - __main__ - INFO - Epoch: 4, loss_train_last_batch: 9.4234, loss_val: 9.4252, best_loss: 9.4252, impatient: 0
+2024-04-08 16:40:52,259 - __main__ - INFO - Epoch: 5, loss_train_last_batch: 9.1908, loss_val: 9.2329, best_loss: 9.2329, impatient: 0
+2024-04-08 16:40:54,929 - __main__ - INFO - Epoch: 6, loss_train_last_batch: 8.9533, loss_val: 9.0506, best_loss: 9.0506, impatient: 0
+2024-04-08 16:40:57,596 - __main__ - INFO - Epoch: 7, loss_train_last_batch: 8.9201, loss_val: 8.8852, best_loss: 8.8852, impatient: 0
+2024-04-08 16:41:00,268 - __main__ - INFO - Epoch: 8, loss_train_last_batch: 8.2794, loss_val: 8.7232, best_loss: 8.7232, impatient: 0
+2024-04-08 16:41:02,935 - __main__ - INFO - Epoch: 9, loss_train_last_batch: 8.2529, loss_val: 8.5647, best_loss: 8.5647, impatient: 0
+2024-04-08 16:41:05,603 - __main__ - INFO - Epoch: 10, loss_train_last_batch: 7.9669, loss_val: 8.4234, best_loss: 8.4234, impatient: 0
+2024-04-08 16:41:08,269 - __main__ - INFO - Epoch: 11, loss_train_last_batch: 8.1644, loss_val: 8.3041, best_loss: 8.3041, impatient: 0
+2024-04-08 16:41:10,932 - __main__ - INFO - Epoch: 12, loss_train_last_batch: 7.8091, loss_val: 8.1832, best_loss: 8.1832, impatient: 0
+2024-04-08 16:41:13,597 - __main__ - INFO - Epoch: 13, loss_train_last_batch: 7.7203, loss_val: 8.0860, best_loss: 8.0860, impatient: 0
+2024-04-08 16:41:16,262 - __main__ - INFO - Epoch: 14, loss_train_last_batch: 7.5466, loss_val: 7.9911, best_loss: 7.9911, impatient: 0
+2024-04-08 16:41:18,918 - __main__ - INFO - Epoch: 15, loss_train_last_batch: 7.8641, loss_val: 7.9015, best_loss: 7.9015, impatient: 0
+2024-04-08 16:41:21,575 - __main__ - INFO - Epoch: 16, loss_train_last_batch: 7.5742, loss_val: 7.8346, best_loss: 7.8346, impatient: 0
+2024-04-08 16:41:24,250 - __main__ - INFO - Epoch: 17, loss_train_last_batch: 7.3696, loss_val: 7.7704, best_loss: 7.7704, impatient: 0
+2024-04-08 16:41:26,921 - __main__ - INFO - Epoch: 18, loss_train_last_batch: 7.4645, loss_val: 7.7143, best_loss: 7.7143, impatient: 0
+2024-04-08 16:41:29,595 - __main__ - INFO - Epoch: 19, loss_train_last_batch: 7.2717, loss_val: 7.6447, best_loss: 7.6447, impatient: 0
+2024-04-08 16:41:32,260 - __main__ - INFO - Epoch: 20, loss_train_last_batch: 7.2045, loss_val: 7.5958, best_loss: 7.5958, impatient: 0
+2024-04-08 16:41:34,924 - __main__ - INFO - Epoch: 21, loss_train_last_batch: 7.0137, loss_val: 7.5490, best_loss: 7.5490, impatient: 0
+2024-04-08 16:41:37,591 - __main__ - INFO - Epoch: 22, loss_train_last_batch: 6.7300, loss_val: 7.5129, best_loss: 7.5129, impatient: 0
+2024-04-08 16:41:40,257 - __main__ - INFO - Epoch: 23, loss_train_last_batch: 7.1200, loss_val: 7.4778, best_loss: 7.4778, impatient: 0
+2024-04-08 16:41:42,925 - __main__ - INFO - Epoch: 24, loss_train_last_batch: 6.7936, loss_val: 7.4392, best_loss: 7.4392, impatient: 0
+2024-04-08 16:41:45,591 - __main__ - INFO - Epoch: 25, loss_train_last_batch: 6.8438, loss_val: 7.4063, best_loss: 7.4063, impatient: 0
+2024-04-08 16:41:48,249 - __main__ - INFO - Epoch: 26, loss_train_last_batch: 6.7478, loss_val: 7.3728, best_loss: 7.3728, impatient: 0
+2024-04-08 16:41:50,926 - __main__ - INFO - Epoch: 27, loss_train_last_batch: 6.6662, loss_val: 7.3597, best_loss: 7.3597, impatient: 0
+2024-04-08 16:41:53,593 - __main__ - INFO - Epoch: 28, loss_train_last_batch: 6.7067, loss_val: 7.3227, best_loss: 7.3227, impatient: 0
+2024-04-08 16:41:56,290 - __main__ - INFO - Epoch: 29, loss_train_last_batch: 6.8197, loss_val: 7.2978, best_loss: 7.2978, impatient: 0
+2024-04-08 16:41:58,949 - __main__ - INFO - Epoch: 30, loss_train_last_batch: 6.5522, loss_val: 7.2885, best_loss: 7.2885, impatient: 0
+2024-04-08 16:42:01,615 - __main__ - INFO - Epoch: 31, loss_train_last_batch: 6.4485, loss_val: 7.2633, best_loss: 7.2633, impatient: 0
+2024-04-08 16:42:04,264 - __main__ - INFO - Epoch: 32, loss_train_last_batch: 6.6241, loss_val: 7.2533, best_loss: 7.2533, impatient: 0
+2024-04-08 16:42:06,930 - __main__ - INFO - Epoch: 33, loss_train_last_batch: 6.6349, loss_val: 7.2272, best_loss: 7.2272, impatient: 0
+2024-04-08 16:42:09,602 - __main__ - INFO - Epoch: 34, loss_train_last_batch: 6.6522, loss_val: 7.2213, best_loss: 7.2213, impatient: 0
+2024-04-08 16:42:12,278 - __main__ - INFO - Epoch: 35, loss_train_last_batch: 6.7333, loss_val: 7.2021, best_loss: 7.2021, impatient: 0
+2024-04-08 16:42:14,943 - __main__ - INFO - Epoch: 36, loss_train_last_batch: 6.6625, loss_val: 7.2098, best_loss: 7.2021, impatient: 1
+2024-04-08 16:42:17,606 - __main__ - INFO - Epoch: 37, loss_train_last_batch: 6.4626, loss_val: 7.1817, best_loss: 7.1817, impatient: 0
+2024-04-08 16:42:20,275 - __main__ - INFO - Epoch: 38, loss_train_last_batch: 6.1917, loss_val: 7.1609, best_loss: 7.1609, impatient: 0
+2024-04-08 16:42:22,937 - __main__ - INFO - Epoch: 39, loss_train_last_batch: 6.6128, loss_val: 7.1484, best_loss: 7.1484, impatient: 0
+2024-04-08 16:42:25,595 - __main__ - INFO - Epoch: 40, loss_train_last_batch: 6.0836, loss_val: 7.1572, best_loss: 7.1484, impatient: 1
+2024-04-08 16:42:28,266 - __main__ - INFO - Epoch: 41, loss_train_last_batch: 6.0743, loss_val: 7.1359, best_loss: 7.1359, impatient: 0
+2024-04-08 16:42:30,933 - __main__ - INFO - Epoch: 42, loss_train_last_batch: 6.0840, loss_val: 7.1397, best_loss: 7.1359, impatient: 1
+2024-04-08 16:42:33,604 - __main__ - INFO - Epoch: 43, loss_train_last_batch: 6.1642, loss_val: 7.1218, best_loss: 7.1218, impatient: 0
+2024-04-08 16:42:36,274 - __main__ - INFO - Epoch: 44, loss_train_last_batch: 6.0315, loss_val: 7.1314, best_loss: 7.1218, impatient: 1
+2024-04-08 16:42:38,924 - __main__ - INFO - Epoch: 45, loss_train_last_batch: 6.1334, loss_val: 7.1104, best_loss: 7.1104, impatient: 0
+2024-04-08 16:42:41,709 - __main__ - INFO - Epoch: 46, loss_train_last_batch: 6.0913, loss_val: 7.1162, best_loss: 7.1104, impatient: 1
+2024-04-08 16:42:44,382 - __main__ - INFO - Epoch: 47, loss_train_last_batch: 6.1002, loss_val: 7.0948, best_loss: 7.0948, impatient: 0
+2024-04-08 16:42:47,049 - __main__ - INFO - Epoch: 48, loss_train_last_batch: 6.2143, loss_val: 7.0919, best_loss: 7.0919, impatient: 0
+2024-04-08 16:42:49,715 - __main__ - INFO - Epoch: 49, loss_train_last_batch: 6.1284, loss_val: 7.0895, best_loss: 7.0895, impatient: 0
+2024-04-08 16:42:52,381 - __main__ - INFO - Epoch: 50, loss_train_last_batch: 5.6963, loss_val: 7.0941, best_loss: 7.0895, impatient: 1
+2024-04-08 16:42:55,050 - __main__ - INFO - Epoch: 51, loss_train_last_batch: 5.9723, loss_val: 7.0755, best_loss: 7.0755, impatient: 0
+2024-04-08 16:42:57,710 - __main__ - INFO - Epoch: 52, loss_train_last_batch: 5.6513, loss_val: 7.0840, best_loss: 7.0755, impatient: 1
+2024-04-08 16:43:00,366 - __main__ - INFO - Epoch: 53, loss_train_last_batch: 5.8587, loss_val: 7.0559, best_loss: 7.0559, impatient: 0
+2024-04-08 16:43:03,026 - __main__ - INFO - Epoch: 54, loss_train_last_batch: 6.0513, loss_val: 7.0672, best_loss: 7.0559, impatient: 1
+2024-04-08 16:43:05,677 - __main__ - INFO - Epoch: 55, loss_train_last_batch: 5.9798, loss_val: 7.0650, best_loss: 7.0559, impatient: 2
+2024-04-08 16:43:08,339 - __main__ - INFO - Epoch: 56, loss_train_last_batch: 5.7047, loss_val: 7.0678, best_loss: 7.0559, impatient: 3
+2024-04-08 16:43:11,009 - __main__ - INFO - Epoch: 57, loss_train_last_batch: 5.7898, loss_val: 7.0477, best_loss: 7.0477, impatient: 0
+2024-04-08 16:43:13,670 - __main__ - INFO - Epoch: 58, loss_train_last_batch: 5.9839, loss_val: 7.0466, best_loss: 7.0466, impatient: 0
+2024-04-08 16:43:16,342 - __main__ - INFO - Epoch: 59, loss_train_last_batch: 5.9954, loss_val: 7.0452, best_loss: 7.0452, impatient: 0
+2024-04-08 16:43:19,005 - __main__ - INFO - Epoch: 60, loss_train_last_batch: 5.7815, loss_val: 7.0373, best_loss: 7.0373, impatient: 0
+2024-04-08 16:43:21,669 - __main__ - INFO - Epoch: 61, loss_train_last_batch: 5.8837, loss_val: 7.0541, best_loss: 7.0373, impatient: 1
+2024-04-08 16:43:24,329 - __main__ - INFO - Epoch: 62, loss_train_last_batch: 5.7454, loss_val: 7.0398, best_loss: 7.0373, impatient: 2
+2024-04-08 16:43:26,993 - __main__ - INFO - Epoch: 63, loss_train_last_batch: 5.5089, loss_val: 7.0407, best_loss: 7.0373, impatient: 3
+2024-04-08 16:43:29,663 - __main__ - INFO - Epoch: 64, loss_train_last_batch: 5.6777, loss_val: 7.0361, best_loss: 7.0361, impatient: 0
+2024-04-08 16:43:32,324 - __main__ - INFO - Epoch: 65, loss_train_last_batch: 5.8562, loss_val: 7.0323, best_loss: 7.0323, impatient: 0
+2024-04-08 16:43:34,987 - __main__ - INFO - Epoch: 66, loss_train_last_batch: 5.9013, loss_val: 7.0302, best_loss: 7.0302, impatient: 0
+2024-04-08 16:43:37,651 - __main__ - INFO - Epoch: 67, loss_train_last_batch: 5.8145, loss_val: 7.0481, best_loss: 7.0302, impatient: 1
+2024-04-08 16:43:40,318 - __main__ - INFO - Epoch: 68, loss_train_last_batch: 5.8220, loss_val: 7.0241, best_loss: 7.0241, impatient: 0
+2024-04-08 16:43:43,004 - __main__ - INFO - Epoch: 69, loss_train_last_batch: 5.4944, loss_val: 7.0402, best_loss: 7.0241, impatient: 1
+2024-04-08 16:43:45,660 - __main__ - INFO - Epoch: 70, loss_train_last_batch: 5.8571, loss_val: 7.0292, best_loss: 7.0241, impatient: 2
+2024-04-08 16:43:48,322 - __main__ - INFO - Epoch: 71, loss_train_last_batch: 5.8605, loss_val: 7.0274, best_loss: 7.0241, impatient: 3
+2024-04-08 16:43:50,973 - __main__ - INFO - Epoch: 72, loss_train_last_batch: 5.9470, loss_val: 7.0336, best_loss: 7.0241, impatient: 4
+2024-04-08 16:43:53,628 - __main__ - INFO - Epoch: 73, loss_train_last_batch: 5.6005, loss_val: 7.0186, best_loss: 7.0186, impatient: 0
+2024-04-08 16:43:56,282 - __main__ - INFO - Epoch: 74, loss_train_last_batch: 5.3879, loss_val: 7.0256, best_loss: 7.0186, impatient: 1
+2024-04-08 16:43:58,932 - __main__ - INFO - Epoch: 75, loss_train_last_batch: 5.5978, loss_val: 7.0400, best_loss: 7.0186, impatient: 2
+2024-04-08 16:44:01,593 - __main__ - INFO - Epoch: 76, loss_train_last_batch: 5.5492, loss_val: 7.0368, best_loss: 7.0186, impatient: 3
+2024-04-08 16:44:04,256 - __main__ - INFO - Epoch: 77, loss_train_last_batch: 5.3617, loss_val: 7.0364, best_loss: 7.0186, impatient: 4
+2024-04-08 16:44:06,905 - __main__ - INFO - Epoch: 78, loss_train_last_batch: 5.5510, loss_val: 7.0407, best_loss: 7.0186, impatient: 5
+2024-04-08 16:44:09,576 - __main__ - INFO - Epoch: 79, loss_train_last_batch: 5.3180, loss_val: 7.0216, best_loss: 7.0186, impatient: 6
+2024-04-08 16:44:12,235 - __main__ - INFO - Epoch: 80, loss_train_last_batch: 5.4933, loss_val: 7.0360, best_loss: 7.0186, impatient: 7
+2024-04-08 16:44:14,893 - __main__ - INFO - Epoch: 81, loss_train_last_batch: 5.7716, loss_val: 7.0286, best_loss: 7.0186, impatient: 8
+2024-04-08 16:44:17,554 - __main__ - INFO - Epoch: 82, loss_train_last_batch: 5.5672, loss_val: 7.0201, best_loss: 7.0186, impatient: 9
+2024-04-08 16:44:20,211 - __main__ - INFO - Epoch: 83, loss_train_last_batch: 5.5658, loss_val: 7.0276, best_loss: 7.0186, impatient: 10
+2024-04-08 16:44:22,882 - __main__ - INFO - Epoch: 84, loss_train_last_batch: 5.5433, loss_val: 7.0378, best_loss: 7.0186, impatient: 11
+2024-04-08 16:44:25,544 - __main__ - INFO - Epoch: 85, loss_train_last_batch: 5.5402, loss_val: 7.0333, best_loss: 7.0186, impatient: 12
+2024-04-08 16:44:28,197 - __main__ - INFO - Epoch: 86, loss_train_last_batch: 5.3627, loss_val: 7.0366, best_loss: 7.0186, impatient: 13
+2024-04-08 16:44:30,863 - __main__ - INFO - Epoch: 87, loss_train_last_batch: 5.4168, loss_val: 7.0276, best_loss: 7.0186, impatient: 14
+2024-04-08 16:44:33,533 - __main__ - INFO - Epoch: 88, loss_train_last_batch: 5.0577, loss_val: 7.0399, best_loss: 7.0186, impatient: 15
+2024-04-08 16:44:36,204 - __main__ - INFO - Epoch: 89, loss_train_last_batch: 5.4166, loss_val: 7.0352, best_loss: 7.0186, impatient: 16
+2024-04-08 16:44:38,847 - __main__ - INFO - Epoch: 90, loss_train_last_batch: 5.1281, loss_val: 7.0293, best_loss: 7.0186, impatient: 17
+2024-04-08 16:44:41,522 - __main__ - INFO - Epoch: 91, loss_train_last_batch: 5.0962, loss_val: 7.0150, best_loss: 7.0150, impatient: 0
+2024-04-08 16:44:44,169 - __main__ - INFO - Epoch: 92, loss_train_last_batch: 5.2346, loss_val: 7.0343, best_loss: 7.0150, impatient: 1
+2024-04-08 16:44:46,827 - __main__ - INFO - Epoch: 93, loss_train_last_batch: 4.9898, loss_val: 7.0427, best_loss: 7.0150, impatient: 2
+2024-04-08 16:44:49,478 - __main__ - INFO - Epoch: 94, loss_train_last_batch: 4.9917, loss_val: 7.0271, best_loss: 7.0150, impatient: 3
+2024-04-08 16:44:52,138 - __main__ - INFO - Epoch: 95, loss_train_last_batch: 5.4095, loss_val: 7.0364, best_loss: 7.0150, impatient: 4
+2024-04-08 16:44:54,788 - __main__ - INFO - Epoch: 96, loss_train_last_batch: 5.0506, loss_val: 7.0419, best_loss: 7.0150, impatient: 5
+2024-04-08 16:44:57,448 - __main__ - INFO - Epoch: 97, loss_train_last_batch: 5.0728, loss_val: 7.0418, best_loss: 7.0150, impatient: 6
+2024-04-08 16:45:00,116 - __main__ - INFO - Epoch: 98, loss_train_last_batch: 5.3613, loss_val: 7.0342, best_loss: 7.0150, impatient: 7
+2024-04-08 16:45:02,777 - __main__ - INFO - Epoch: 99, loss_train_last_batch: 4.9917, loss_val: 7.0488, best_loss: 7.0150, impatient: 8
+2024-04-08 16:45:05,445 - __main__ - INFO - Epoch: 100, loss_train_last_batch: 5.1951, loss_val: 7.0522, best_loss: 7.0150, impatient: 9
+2024-04-08 16:45:08,112 - __main__ - INFO - Epoch: 101, loss_train_last_batch: 5.0704, loss_val: 7.0646, best_loss: 7.0150, impatient: 10
+2024-04-08 16:45:10,764 - __main__ - INFO - Epoch: 102, loss_train_last_batch: 5.1069, loss_val: 7.0616, best_loss: 7.0150, impatient: 11
+2024-04-08 16:45:13,536 - __main__ - INFO - Epoch: 103, loss_train_last_batch: 4.9758, loss_val: 7.0628, best_loss: 7.0150, impatient: 12
+2024-04-08 16:45:16,190 - __main__ - INFO - Epoch: 104, loss_train_last_batch: 4.9239, loss_val: 7.0528, best_loss: 7.0150, impatient: 13
+2024-04-08 16:45:18,832 - __main__ - INFO - Epoch: 105, loss_train_last_batch: 4.8691, loss_val: 7.0603, best_loss: 7.0150, impatient: 14
+2024-04-08 16:45:21,485 - __main__ - INFO - Epoch: 106, loss_train_last_batch: 5.0891, loss_val: 7.0727, best_loss: 7.0150, impatient: 15
+2024-04-08 16:45:24,153 - __main__ - INFO - Epoch: 107, loss_train_last_batch: 4.9230, loss_val: 7.0726, best_loss: 7.0150, impatient: 16
+2024-04-08 16:45:26,817 - __main__ - INFO - Epoch: 108, loss_train_last_batch: 4.7831, loss_val: 7.0602, best_loss: 7.0150, impatient: 17
+2024-04-08 16:45:29,510 - __main__ - INFO - Epoch: 109, loss_train_last_batch: 4.8664, loss_val: 7.0761, best_loss: 7.0150, impatient: 18
+2024-04-08 16:45:32,170 - __main__ - INFO - Epoch: 110, loss_train_last_batch: 5.0532, loss_val: 7.0636, best_loss: 7.0150, impatient: 19
+2024-04-08 16:45:34,823 - __main__ - INFO - Breaking due to early stopping at epoch 110
+2024-04-08 16:46:15,780 - __main__ - INFO - Negative log-likelihood:
+ - Train: 5.081
+ - Val:   7.015
+ - Test:  7.493
+    - Mark NLL: 4.302
+    - Time NLL: 3.191
+2024-04-08 16:46:56,762 - __main__ - INFO - acc@1: 0.347
+2024-04-08 16:46:56,950 - __main__ - INFO - acc@5: 0.584
+2024-04-08 16:46:57,139 - __main__ - INFO - acc@10: 0.625
+2024-04-08 16:46:57,141 - __main__ - INFO - f1_score: 0.246
+2024-04-08 16:46:57,209 - __main__ - INFO - Recall@1: 0.347
+2024-04-08 16:46:57,209 - __main__ - INFO - Recall@5: 0.584
+2024-04-08 16:46:57,209 - __main__ - INFO - Recall@10: 0.625
+2024-04-08 16:46:57,209 - __main__ - INFO - NDCG@10: 0.494
+2024-04-08 16:46:57,209 - __main__ - INFO - MRR@10: 0.451
+2024-04-08 16:46:57,304 - __main__ - INFO - finished...
+2024-04-08 16:46:57,553 - __main__ - INFO - Log directory: ././log/TrajTPP-15-5/log-2024-04-08-16-46-57/
+2024-04-08 16:46:57,555 - __main__ - INFO - Namespace(seed=3, device=1, max_epochs=5000, use_marks=True, decoder_name='LogNormMix', rnn_type='GGRU', attention_type='GAU', use_history=True, history_size=128, use_embedding=False, embedding_size=32, trainable_affine=False, batch_size=1024, n_components=64, learning_rate=0.0001, regularization=1e-05, patience=20, num_classes=1187, num_heads=1, mark_embedding_size=128, log_dir='./log/TrajTPP', grn_decoder='GAU', dataset_name='./dataset/geolife', use_sa=True, use_timeofday=False, use_dayofweek=False, use_driver=True, pre_embedding=False, joint_type='None', time_threshold=15, trip_threshold=5, min_clip=-5.0, max_clip=3.0, use_prior=False, use_mtl=False, log_filename='log-2024-04-08-16-46-57.log', log_path='././log/TrajTPP-15-5/log-2024-04-08-16-46-57/', mean_in_train=tensor(1.5295, device='cuda:1'), std_in_train=tensor(1.0899, device='cuda:1'))
+2024-04-08 16:46:57,563 - __main__ - INFO - Using GPU 1
+2024-04-08 16:46:57,563 - __main__ - INFO - load data...
+2024-04-08 16:47:00,475 - __main__ - INFO - num_drivers: 46, d_train: 20, d_val: 29, d_test: 28
+2024-04-08 16:47:00,765 - __main__ - INFO - Building model...
+2024-04-08 16:47:00,765 - __main__ - INFO - mean_log_inter_time: 1.5294513702392578, std_log_inter_time: 1.08988356590271
+2024-04-08 16:47:01,135 - __main__ - INFO - Model(
+  (rnn): RNNLayer(
+    (mark_embedding): Embedding(1187, 128)
+    (temporal_embed): Linear(in_features=1, out_features=128, bias=True)
+    (temporal_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (spatial_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (output_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (rnn): GGRU(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (mark_fc): Linear(in_features=128, out_features=128, bias=True)
+      (ggru_ln): MaybeLayerNorm(
+        (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+      )
+    )
+  )
+  (mark_layer): Sequential(
+    (0): Linear(in_features=128, out_features=1187, bias=True)
+  )
+  (driver_embedding): Embedding(46, 32)
+  (enrichment_gran): GRAN(
+    (layer_norm): MaybeLayerNorm(
+      (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+    )
+    (lin_a): Linear(in_features=128, out_features=128, bias=True)
+    (lin_c): Linear(in_features=32, out_features=128, bias=False)
+    (lin_i): Linear(in_features=128, out_features=128, bias=True)
+    (gau): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (out_proj): Linear(in_features=128, out_features=128, bias=True)
+  )
+  (decoder): TransformedDistribution(
+    (transforms): ModuleList(
+      (0): FixedAffine()
+      (1): Exp()
+    )
+    (base_dist): NormalMixtureDistribution(
+      (hypernet): Hypernet(
+        (activation): Tanh()
+        (linear_rnn): Linear(in_features=128, out_features=192, bias=False)
+        (linear_layers): ModuleList()
+      )
+    )
+  )
+  (h_mark_fc): Linear(in_features=128, out_features=128, bias=True)
+  (h_time_fc): Linear(in_features=128, out_features=128, bias=True)
+  (layer_norm_time): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+  (layer_norm_mark): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+)
+2024-04-08 16:47:01,144 - __main__ - INFO - Starting training...
+2024-04-08 16:47:03,833 - __main__ - INFO - Epoch: 1, loss_train_last_batch: 10.2503, loss_val: 10.2210, best_loss: 10.2210, impatient: 0
+2024-04-08 16:47:06,503 - __main__ - INFO - Epoch: 2, loss_train_last_batch: 9.9302, loss_val: 9.8119, best_loss: 9.8119, impatient: 0
+2024-04-08 16:47:09,159 - __main__ - INFO - Epoch: 3, loss_train_last_batch: 9.4353, loss_val: 9.5331, best_loss: 9.5331, impatient: 0
+2024-04-08 16:47:11,824 - __main__ - INFO - Epoch: 4, loss_train_last_batch: 9.4285, loss_val: 9.2855, best_loss: 9.2855, impatient: 0
+2024-04-08 16:47:14,493 - __main__ - INFO - Epoch: 5, loss_train_last_batch: 9.2126, loss_val: 9.0821, best_loss: 9.0821, impatient: 0
+2024-04-08 16:47:17,164 - __main__ - INFO - Epoch: 6, loss_train_last_batch: 8.8922, loss_val: 8.8763, best_loss: 8.8763, impatient: 0
+2024-04-08 16:47:19,815 - __main__ - INFO - Epoch: 7, loss_train_last_batch: 8.8556, loss_val: 8.7081, best_loss: 8.7081, impatient: 0
+2024-04-08 16:47:22,489 - __main__ - INFO - Epoch: 8, loss_train_last_batch: 8.2290, loss_val: 8.5625, best_loss: 8.5625, impatient: 0
+2024-04-08 16:47:25,160 - __main__ - INFO - Epoch: 9, loss_train_last_batch: 8.2749, loss_val: 8.4297, best_loss: 8.4297, impatient: 0
+2024-04-08 16:47:27,830 - __main__ - INFO - Epoch: 10, loss_train_last_batch: 7.9484, loss_val: 8.2982, best_loss: 8.2982, impatient: 0
+2024-04-08 16:47:30,495 - __main__ - INFO - Epoch: 11, loss_train_last_batch: 8.1654, loss_val: 8.1951, best_loss: 8.1951, impatient: 0
+2024-04-08 16:47:33,147 - __main__ - INFO - Epoch: 12, loss_train_last_batch: 7.8075, loss_val: 8.0897, best_loss: 8.0897, impatient: 0
+2024-04-08 16:47:35,822 - __main__ - INFO - Epoch: 13, loss_train_last_batch: 7.7674, loss_val: 8.0033, best_loss: 8.0033, impatient: 0
+2024-04-08 16:47:38,485 - __main__ - INFO - Epoch: 14, loss_train_last_batch: 7.6219, loss_val: 7.9089, best_loss: 7.9089, impatient: 0
+2024-04-08 16:47:41,159 - __main__ - INFO - Epoch: 15, loss_train_last_batch: 7.8739, loss_val: 7.8332, best_loss: 7.8332, impatient: 0
+2024-04-08 16:47:43,811 - __main__ - INFO - Epoch: 16, loss_train_last_batch: 7.6365, loss_val: 7.7606, best_loss: 7.7606, impatient: 0
+2024-04-08 16:47:46,485 - __main__ - INFO - Epoch: 17, loss_train_last_batch: 7.3667, loss_val: 7.6944, best_loss: 7.6944, impatient: 0
+2024-04-08 16:47:49,144 - __main__ - INFO - Epoch: 18, loss_train_last_batch: 7.5345, loss_val: 7.6447, best_loss: 7.6447, impatient: 0
+2024-04-08 16:47:51,820 - __main__ - INFO - Epoch: 19, loss_train_last_batch: 7.2782, loss_val: 7.5900, best_loss: 7.5900, impatient: 0
+2024-04-08 16:47:54,473 - __main__ - INFO - Epoch: 20, loss_train_last_batch: 7.1895, loss_val: 7.5346, best_loss: 7.5346, impatient: 0
+2024-04-08 16:47:57,139 - __main__ - INFO - Epoch: 21, loss_train_last_batch: 7.0906, loss_val: 7.4864, best_loss: 7.4864, impatient: 0
+2024-04-08 16:47:59,807 - __main__ - INFO - Epoch: 22, loss_train_last_batch: 6.7505, loss_val: 7.4544, best_loss: 7.4544, impatient: 0
+2024-04-08 16:48:02,469 - __main__ - INFO - Epoch: 23, loss_train_last_batch: 7.1422, loss_val: 7.4188, best_loss: 7.4188, impatient: 0
+2024-04-08 16:48:05,140 - __main__ - INFO - Epoch: 24, loss_train_last_batch: 6.8869, loss_val: 7.3755, best_loss: 7.3755, impatient: 0
+2024-04-08 16:48:07,806 - __main__ - INFO - Epoch: 25, loss_train_last_batch: 6.8605, loss_val: 7.3312, best_loss: 7.3312, impatient: 0
+2024-04-08 16:48:10,461 - __main__ - INFO - Epoch: 26, loss_train_last_batch: 6.8124, loss_val: 7.3123, best_loss: 7.3123, impatient: 0
+2024-04-08 16:48:13,133 - __main__ - INFO - Epoch: 27, loss_train_last_batch: 6.6694, loss_val: 7.2767, best_loss: 7.2767, impatient: 0
+2024-04-08 16:48:15,812 - __main__ - INFO - Epoch: 28, loss_train_last_batch: 6.7185, loss_val: 7.2550, best_loss: 7.2550, impatient: 0
+2024-04-08 16:48:18,477 - __main__ - INFO - Epoch: 29, loss_train_last_batch: 6.7943, loss_val: 7.2204, best_loss: 7.2204, impatient: 0
+2024-04-08 16:48:21,297 - __main__ - INFO - Epoch: 30, loss_train_last_batch: 6.6032, loss_val: 7.2097, best_loss: 7.2097, impatient: 0
+2024-04-08 16:48:23,955 - __main__ - INFO - Epoch: 31, loss_train_last_batch: 6.5566, loss_val: 7.1765, best_loss: 7.1765, impatient: 0
+2024-04-08 16:48:26,622 - __main__ - INFO - Epoch: 32, loss_train_last_batch: 6.6562, loss_val: 7.1640, best_loss: 7.1640, impatient: 0
+2024-04-08 16:48:29,292 - __main__ - INFO - Epoch: 33, loss_train_last_batch: 6.5919, loss_val: 7.1587, best_loss: 7.1587, impatient: 0
+2024-04-08 16:48:31,970 - __main__ - INFO - Epoch: 34, loss_train_last_batch: 6.6594, loss_val: 7.1297, best_loss: 7.1297, impatient: 0
+2024-04-08 16:48:34,627 - __main__ - INFO - Epoch: 35, loss_train_last_batch: 6.7223, loss_val: 7.1107, best_loss: 7.1107, impatient: 0
+2024-04-08 16:48:37,298 - __main__ - INFO - Epoch: 36, loss_train_last_batch: 6.6493, loss_val: 7.1024, best_loss: 7.1024, impatient: 0
+2024-04-08 16:48:39,962 - __main__ - INFO - Epoch: 37, loss_train_last_batch: 6.4427, loss_val: 7.0863, best_loss: 7.0863, impatient: 0
+2024-04-08 16:48:42,630 - __main__ - INFO - Epoch: 38, loss_train_last_batch: 6.2177, loss_val: 7.0766, best_loss: 7.0766, impatient: 0
+2024-04-08 16:48:45,294 - __main__ - INFO - Epoch: 39, loss_train_last_batch: 6.5889, loss_val: 7.0510, best_loss: 7.0510, impatient: 0
+2024-04-08 16:48:47,951 - __main__ - INFO - Epoch: 40, loss_train_last_batch: 6.1311, loss_val: 7.0575, best_loss: 7.0510, impatient: 1
+2024-04-08 16:48:50,621 - __main__ - INFO - Epoch: 41, loss_train_last_batch: 6.1418, loss_val: 7.0372, best_loss: 7.0372, impatient: 0
+2024-04-08 16:48:53,293 - __main__ - INFO - Epoch: 42, loss_train_last_batch: 6.1676, loss_val: 7.0173, best_loss: 7.0173, impatient: 0
+2024-04-08 16:48:55,961 - __main__ - INFO - Epoch: 43, loss_train_last_batch: 6.1773, loss_val: 7.0208, best_loss: 7.0173, impatient: 1
+2024-04-08 16:48:58,634 - __main__ - INFO - Epoch: 44, loss_train_last_batch: 6.0597, loss_val: 6.9991, best_loss: 6.9991, impatient: 0
+2024-04-08 16:49:01,307 - __main__ - INFO - Epoch: 45, loss_train_last_batch: 6.1480, loss_val: 6.9848, best_loss: 6.9848, impatient: 0
+2024-04-08 16:49:03,959 - __main__ - INFO - Epoch: 46, loss_train_last_batch: 6.2119, loss_val: 6.9861, best_loss: 6.9848, impatient: 1
+2024-04-08 16:49:06,630 - __main__ - INFO - Epoch: 47, loss_train_last_batch: 6.0226, loss_val: 6.9781, best_loss: 6.9781, impatient: 0
+2024-04-08 16:49:09,294 - __main__ - INFO - Epoch: 48, loss_train_last_batch: 6.1958, loss_val: 6.9738, best_loss: 6.9738, impatient: 0
+2024-04-08 16:49:11,957 - __main__ - INFO - Epoch: 49, loss_train_last_batch: 6.2155, loss_val: 6.9582, best_loss: 6.9582, impatient: 0
+2024-04-08 16:49:14,624 - __main__ - INFO - Epoch: 50, loss_train_last_batch: 5.7339, loss_val: 6.9811, best_loss: 6.9582, impatient: 1
+2024-04-08 16:49:17,290 - __main__ - INFO - Epoch: 51, loss_train_last_batch: 5.9989, loss_val: 6.9481, best_loss: 6.9481, impatient: 0
+2024-04-08 16:49:19,954 - __main__ - INFO - Epoch: 52, loss_train_last_batch: 5.6250, loss_val: 6.9574, best_loss: 6.9481, impatient: 1
+2024-04-08 16:49:22,615 - __main__ - INFO - Epoch: 53, loss_train_last_batch: 5.7853, loss_val: 6.9488, best_loss: 6.9481, impatient: 2
+2024-04-08 16:49:25,280 - __main__ - INFO - Epoch: 54, loss_train_last_batch: 6.0430, loss_val: 6.9223, best_loss: 6.9223, impatient: 0
+2024-04-08 16:49:27,934 - __main__ - INFO - Epoch: 55, loss_train_last_batch: 5.9831, loss_val: 6.9494, best_loss: 6.9223, impatient: 1
+2024-04-08 16:49:30,602 - __main__ - INFO - Epoch: 56, loss_train_last_batch: 5.6992, loss_val: 6.9280, best_loss: 6.9223, impatient: 2
+2024-04-08 16:49:33,262 - __main__ - INFO - Epoch: 57, loss_train_last_batch: 5.7504, loss_val: 6.9300, best_loss: 6.9223, impatient: 3
+2024-04-08 16:49:35,921 - __main__ - INFO - Epoch: 58, loss_train_last_batch: 5.9921, loss_val: 6.9157, best_loss: 6.9157, impatient: 0
+2024-04-08 16:49:38,591 - __main__ - INFO - Epoch: 59, loss_train_last_batch: 6.0448, loss_val: 6.9162, best_loss: 6.9157, impatient: 1
+2024-04-08 16:49:41,268 - __main__ - INFO - Epoch: 60, loss_train_last_batch: 5.7363, loss_val: 6.9027, best_loss: 6.9027, impatient: 0
+2024-04-08 16:49:43,945 - __main__ - INFO - Epoch: 61, loss_train_last_batch: 5.9486, loss_val: 6.9026, best_loss: 6.9026, impatient: 0
+2024-04-08 16:49:46,610 - __main__ - INFO - Epoch: 62, loss_train_last_batch: 5.8345, loss_val: 6.9088, best_loss: 6.9026, impatient: 1
+2024-04-08 16:49:49,283 - __main__ - INFO - Epoch: 63, loss_train_last_batch: 5.4769, loss_val: 6.8888, best_loss: 6.8888, impatient: 0
+2024-04-08 16:49:51,958 - __main__ - INFO - Epoch: 64, loss_train_last_batch: 5.7112, loss_val: 6.8888, best_loss: 6.8888, impatient: 0
+2024-04-08 16:49:54,615 - __main__ - INFO - Epoch: 65, loss_train_last_batch: 5.8214, loss_val: 6.8980, best_loss: 6.8888, impatient: 1
+2024-04-08 16:49:57,274 - __main__ - INFO - Epoch: 66, loss_train_last_batch: 6.0370, loss_val: 6.8900, best_loss: 6.8888, impatient: 2
+2024-04-08 16:49:59,931 - __main__ - INFO - Epoch: 67, loss_train_last_batch: 5.7929, loss_val: 6.8912, best_loss: 6.8888, impatient: 3
+2024-04-08 16:50:02,609 - __main__ - INFO - Epoch: 68, loss_train_last_batch: 5.7891, loss_val: 6.8805, best_loss: 6.8805, impatient: 0
+2024-04-08 16:50:05,280 - __main__ - INFO - Epoch: 69, loss_train_last_batch: 5.5126, loss_val: 6.8922, best_loss: 6.8805, impatient: 1
+2024-04-08 16:50:07,974 - __main__ - INFO - Epoch: 70, loss_train_last_batch: 5.9028, loss_val: 6.8801, best_loss: 6.8801, impatient: 0
+2024-04-08 16:50:10,650 - __main__ - INFO - Epoch: 71, loss_train_last_batch: 5.8108, loss_val: 6.8792, best_loss: 6.8792, impatient: 0
+2024-04-08 16:50:13,305 - __main__ - INFO - Epoch: 72, loss_train_last_batch: 5.8888, loss_val: 6.8907, best_loss: 6.8792, impatient: 1
+2024-04-08 16:50:15,956 - __main__ - INFO - Epoch: 73, loss_train_last_batch: 5.5830, loss_val: 6.8933, best_loss: 6.8792, impatient: 2
+2024-04-08 16:50:18,615 - __main__ - INFO - Epoch: 74, loss_train_last_batch: 5.4096, loss_val: 6.8933, best_loss: 6.8792, impatient: 3
+2024-04-08 16:50:21,283 - __main__ - INFO - Epoch: 75, loss_train_last_batch: 5.6664, loss_val: 6.8809, best_loss: 6.8792, impatient: 4
+2024-04-08 16:50:23,942 - __main__ - INFO - Epoch: 76, loss_train_last_batch: 5.5777, loss_val: 6.8871, best_loss: 6.8792, impatient: 5
+2024-04-08 16:50:26,608 - __main__ - INFO - Epoch: 77, loss_train_last_batch: 5.3961, loss_val: 6.8857, best_loss: 6.8792, impatient: 6
+2024-04-08 16:50:29,261 - __main__ - INFO - Epoch: 78, loss_train_last_batch: 5.4394, loss_val: 6.8827, best_loss: 6.8792, impatient: 7
+2024-04-08 16:50:31,927 - __main__ - INFO - Epoch: 79, loss_train_last_batch: 5.3755, loss_val: 6.8874, best_loss: 6.8792, impatient: 8
+2024-04-08 16:50:34,590 - __main__ - INFO - Epoch: 80, loss_train_last_batch: 5.5037, loss_val: 6.8850, best_loss: 6.8792, impatient: 9
+2024-04-08 16:50:37,252 - __main__ - INFO - Epoch: 81, loss_train_last_batch: 5.7728, loss_val: 6.8669, best_loss: 6.8669, impatient: 0
+2024-04-08 16:50:39,916 - __main__ - INFO - Epoch: 82, loss_train_last_batch: 5.5377, loss_val: 6.8838, best_loss: 6.8669, impatient: 1
+2024-04-08 16:50:42,572 - __main__ - INFO - Epoch: 83, loss_train_last_batch: 5.5792, loss_val: 6.8790, best_loss: 6.8669, impatient: 2
+2024-04-08 16:50:45,246 - __main__ - INFO - Epoch: 84, loss_train_last_batch: 5.5336, loss_val: 6.8842, best_loss: 6.8669, impatient: 3
+2024-04-08 16:50:47,912 - __main__ - INFO - Epoch: 85, loss_train_last_batch: 5.5235, loss_val: 6.8766, best_loss: 6.8669, impatient: 4
+2024-04-08 16:50:50,576 - __main__ - INFO - Epoch: 86, loss_train_last_batch: 5.3746, loss_val: 6.8759, best_loss: 6.8669, impatient: 5
+2024-04-08 16:50:53,251 - __main__ - INFO - Epoch: 87, loss_train_last_batch: 5.4145, loss_val: 6.8711, best_loss: 6.8669, impatient: 6
+2024-04-08 16:50:55,919 - __main__ - INFO - Epoch: 88, loss_train_last_batch: 5.0039, loss_val: 6.8804, best_loss: 6.8669, impatient: 7
+2024-04-08 16:50:58,592 - __main__ - INFO - Epoch: 89, loss_train_last_batch: 5.3606, loss_val: 6.8694, best_loss: 6.8669, impatient: 8
+2024-04-08 16:51:01,256 - __main__ - INFO - Epoch: 90, loss_train_last_batch: 5.1142, loss_val: 6.8912, best_loss: 6.8669, impatient: 9
+2024-04-08 16:51:03,924 - __main__ - INFO - Epoch: 91, loss_train_last_batch: 5.1054, loss_val: 6.8844, best_loss: 6.8669, impatient: 10
+2024-04-08 16:51:06,580 - __main__ - INFO - Epoch: 92, loss_train_last_batch: 5.2984, loss_val: 6.8907, best_loss: 6.8669, impatient: 11
+2024-04-08 16:51:09,236 - __main__ - INFO - Epoch: 93, loss_train_last_batch: 4.9506, loss_val: 6.8997, best_loss: 6.8669, impatient: 12
+2024-04-08 16:51:11,895 - __main__ - INFO - Epoch: 94, loss_train_last_batch: 5.0332, loss_val: 6.8931, best_loss: 6.8669, impatient: 13
+2024-04-08 16:51:14,552 - __main__ - INFO - Epoch: 95, loss_train_last_batch: 5.3912, loss_val: 6.8964, best_loss: 6.8669, impatient: 14
+2024-04-08 16:51:17,206 - __main__ - INFO - Epoch: 96, loss_train_last_batch: 5.1655, loss_val: 6.9095, best_loss: 6.8669, impatient: 15
+2024-04-08 16:51:19,877 - __main__ - INFO - Epoch: 97, loss_train_last_batch: 5.0669, loss_val: 6.9025, best_loss: 6.8669, impatient: 16
+2024-04-08 16:51:22,548 - __main__ - INFO - Epoch: 98, loss_train_last_batch: 5.3700, loss_val: 6.8800, best_loss: 6.8669, impatient: 17
+2024-04-08 16:51:25,212 - __main__ - INFO - Epoch: 99, loss_train_last_batch: 5.0682, loss_val: 6.9089, best_loss: 6.8669, impatient: 18
+2024-04-08 16:51:27,886 - __main__ - INFO - Epoch: 100, loss_train_last_batch: 5.2202, loss_val: 6.8997, best_loss: 6.8669, impatient: 19
+2024-04-08 16:51:30,557 - __main__ - INFO - Breaking due to early stopping at epoch 100
+2024-04-08 16:52:11,580 - __main__ - INFO - Negative log-likelihood:
+ - Train: 5.245
+ - Val:   6.867
+ - Test:  7.343
+    - Mark NLL: 4.148
+    - Time NLL: 3.195
+2024-04-08 16:52:52,759 - __main__ - INFO - acc@1: 0.343
+2024-04-08 16:52:52,948 - __main__ - INFO - acc@5: 0.590
+2024-04-08 16:52:53,137 - __main__ - INFO - acc@10: 0.635
+2024-04-08 16:52:53,139 - __main__ - INFO - f1_score: 0.238
+2024-04-08 16:52:53,210 - __main__ - INFO - Recall@1: 0.343
+2024-04-08 16:52:53,210 - __main__ - INFO - Recall@5: 0.590
+2024-04-08 16:52:53,210 - __main__ - INFO - Recall@10: 0.635
+2024-04-08 16:52:53,210 - __main__ - INFO - NDCG@10: 0.496
+2024-04-08 16:52:53,210 - __main__ - INFO - MRR@10: 0.451
+2024-04-08 16:52:53,304 - __main__ - INFO - finished...
+2024-04-08 16:52:53,536 - __main__ - INFO - Log directory: ././log/TrajTPP-15-5/log-2024-04-08-16-52-53/
+2024-04-08 16:52:53,539 - __main__ - INFO - Namespace(seed=4, device=1, max_epochs=5000, use_marks=True, decoder_name='LogNormMix', rnn_type='GGRU', attention_type='GAU', use_history=True, history_size=128, use_embedding=False, embedding_size=32, trainable_affine=False, batch_size=1024, n_components=64, learning_rate=0.0001, regularization=1e-05, patience=20, num_classes=1187, num_heads=1, mark_embedding_size=128, log_dir='./log/TrajTPP', grn_decoder='GAU', dataset_name='./dataset/geolife', use_sa=True, use_timeofday=False, use_dayofweek=False, use_driver=True, pre_embedding=False, joint_type='None', time_threshold=15, trip_threshold=5, min_clip=-5.0, max_clip=3.0, use_prior=False, use_mtl=False, log_filename='log-2024-04-08-16-52-53.log', log_path='././log/TrajTPP-15-5/log-2024-04-08-16-52-53/', mean_in_train=tensor(1.5295, device='cuda:1'), std_in_train=tensor(1.0899, device='cuda:1'))
+2024-04-08 16:52:53,549 - __main__ - INFO - Using GPU 1
+2024-04-08 16:52:53,549 - __main__ - INFO - load data...
+2024-04-08 16:52:56,425 - __main__ - INFO - num_drivers: 46, d_train: 20, d_val: 29, d_test: 28
+2024-04-08 16:52:56,724 - __main__ - INFO - Building model...
+2024-04-08 16:52:56,725 - __main__ - INFO - mean_log_inter_time: 1.5294513702392578, std_log_inter_time: 1.08988356590271
+2024-04-08 16:52:57,106 - __main__ - INFO - Model(
+  (rnn): RNNLayer(
+    (mark_embedding): Embedding(1187, 128)
+    (temporal_embed): Linear(in_features=1, out_features=128, bias=True)
+    (temporal_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (spatial_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (output_attn): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (rnn): GGRU(
+      (dropout): Dropout(p=0.1, inplace=False)
+      (mark_fc): Linear(in_features=128, out_features=128, bias=True)
+      (ggru_ln): MaybeLayerNorm(
+        (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+      )
+    )
+  )
+  (mark_layer): Sequential(
+    (0): Linear(in_features=128, out_features=1187, bias=True)
+  )
+  (driver_embedding): Embedding(46, 32)
+  (enrichment_gran): GRAN(
+    (layer_norm): MaybeLayerNorm(
+      (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+    )
+    (lin_a): Linear(in_features=128, out_features=128, bias=True)
+    (lin_c): Linear(in_features=32, out_features=128, bias=False)
+    (lin_i): Linear(in_features=128, out_features=128, bias=True)
+    (gau): GAULayer(
+      (gau): GatedAttentionUnit(
+        (activation): ReLU()
+        (i_dense): Linear(in_features=128, out_features=640, bias=True)
+        (o_dense): Linear(in_features=256, out_features=128, bias=True)
+        (q_scaleoffset): ScaleOffset()
+        (k_scaleoffset): ScaleOffset()
+      )
+      (norm): Norm()
+    )
+    (dropout): Dropout(p=0.1, inplace=False)
+    (out_proj): Linear(in_features=128, out_features=128, bias=True)
+  )
+  (decoder): TransformedDistribution(
+    (transforms): ModuleList(
+      (0): FixedAffine()
+      (1): Exp()
+    )
+    (base_dist): NormalMixtureDistribution(
+      (hypernet): Hypernet(
+        (activation): Tanh()
+        (linear_rnn): Linear(in_features=128, out_features=192, bias=False)
+        (linear_layers): ModuleList()
+      )
+    )
+  )
+  (h_mark_fc): Linear(in_features=128, out_features=128, bias=True)
+  (h_time_fc): Linear(in_features=128, out_features=128, bias=True)
+  (layer_norm_time): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+  (layer_norm_mark): MaybeLayerNorm(
+    (ln): LayerNorm((128,), eps=0.001, elementwise_affine=True)
+  )
+)
+2024-04-08 16:52:57,115 - __main__ - INFO - Starting training...
+2024-04-08 16:52:59,856 - __main__ - INFO - Epoch: 1, loss_train_last_batch: 10.1359, loss_val: 10.1621, best_loss: 10.1621, impatient: 0
+2024-04-08 16:53:02,544 - __main__ - INFO - Epoch: 2, loss_train_last_batch: 9.7848, loss_val: 9.9067, best_loss: 9.9067, impatient: 0
+2024-04-08 16:53:05,212 - __main__ - INFO - Epoch: 3, loss_train_last_batch: 9.3404, loss_val: 9.7069, best_loss: 9.7069, impatient: 0
+2024-04-08 16:53:07,891 - __main__ - INFO - Epoch: 4, loss_train_last_batch: 9.3169, loss_val: 9.5166, best_loss: 9.5166, impatient: 0
+2024-04-08 16:53:10,572 - __main__ - INFO - Epoch: 5, loss_train_last_batch: 9.1955, loss_val: 9.3375, best_loss: 9.3375, impatient: 0
+2024-04-08 16:53:13,254 - __main__ - INFO - Epoch: 6, loss_train_last_batch: 8.9170, loss_val: 9.1604, best_loss: 9.1604, impatient: 0
+2024-04-08 16:53:15,930 - __main__ - INFO - Epoch: 7, loss_train_last_batch: 8.8582, loss_val: 8.9840, best_loss: 8.9840, impatient: 0
+2024-04-08 16:53:18,595 - __main__ - INFO - Epoch: 8, loss_train_last_batch: 8.2442, loss_val: 8.8364, best_loss: 8.8364, impatient: 0
+2024-04-08 16:53:21,279 - __main__ - INFO - Epoch: 9, loss_train_last_batch: 8.2424, loss_val: 8.6826, best_loss: 8.6826, impatient: 0
+2024-04-08 16:53:23,966 - __main__ - INFO - Epoch: 10, loss_train_last_batch: 7.9260, loss_val: 8.5561, best_loss: 8.5561, impatient: 0
+2024-04-08 16:53:26,637 - __main__ - INFO - Epoch: 11, loss_train_last_batch: 8.1441, loss_val: 8.4208, best_loss: 8.4208, impatient: 0
+2024-04-08 16:53:29,297 - __main__ - INFO - Epoch: 12, loss_train_last_batch: 7.8010, loss_val: 8.2958, best_loss: 8.2958, impatient: 0
+2024-04-08 16:53:31,985 - __main__ - INFO - Epoch: 13, loss_train_last_batch: 7.6996, loss_val: 8.1937, best_loss: 8.1937, impatient: 0
+2024-04-08 16:53:34,656 - __main__ - INFO - Epoch: 14, loss_train_last_batch: 7.6031, loss_val: 8.0963, best_loss: 8.0963, impatient: 0
+2024-04-08 16:53:37,341 - __main__ - INFO - Epoch: 15, loss_train_last_batch: 7.8554, loss_val: 8.0121, best_loss: 8.0121, impatient: 0
+2024-04-08 16:53:40,019 - __main__ - INFO - Epoch: 16, loss_train_last_batch: 7.6164, loss_val: 7.9344, best_loss: 7.9344, impatient: 0
+2024-04-08 16:53:42,744 - __main__ - INFO - Epoch: 17, loss_train_last_batch: 7.3158, loss_val: 7.8563, best_loss: 7.8563, impatient: 0
+2024-04-08 16:53:45,422 - __main__ - INFO - Epoch: 18, loss_train_last_batch: 7.5081, loss_val: 7.7889, best_loss: 7.7889, impatient: 0
+2024-04-08 16:53:48,105 - __main__ - INFO - Epoch: 19, loss_train_last_batch: 7.3140, loss_val: 7.7169, best_loss: 7.7169, impatient: 0
+2024-04-08 16:53:50,769 - __main__ - INFO - Epoch: 20, loss_train_last_batch: 7.1817, loss_val: 7.6669, best_loss: 7.6669, impatient: 0
+2024-04-08 16:53:53,557 - __main__ - INFO - Epoch: 21, loss_train_last_batch: 6.9766, loss_val: 7.6317, best_loss: 7.6317, impatient: 0
+2024-04-08 16:53:56,227 - __main__ - INFO - Epoch: 22, loss_train_last_batch: 6.7279, loss_val: 7.5772, best_loss: 7.5772, impatient: 0
+2024-04-08 16:53:58,892 - __main__ - INFO - Epoch: 23, loss_train_last_batch: 7.1357, loss_val: 7.5260, best_loss: 7.5260, impatient: 0
+2024-04-08 16:54:01,564 - __main__ - INFO - Epoch: 24, loss_train_last_batch: 6.8110, loss_val: 7.4757, best_loss: 7.4757, impatient: 0
+2024-04-08 16:54:04,222 - __main__ - INFO - Epoch: 25, loss_train_last_batch: 6.8712, loss_val: 7.4418, best_loss: 7.4418, impatient: 0
+2024-04-08 16:54:06,884 - __main__ - INFO - Epoch: 26, loss_train_last_batch: 6.7676, loss_val: 7.4184, best_loss: 7.4184, impatient: 0
+2024-04-08 16:54:09,552 - __main__ - INFO - Epoch: 27, loss_train_last_batch: 6.6282, loss_val: 7.3928, best_loss: 7.3928, impatient: 0
+2024-04-08 16:54:12,223 - __main__ - INFO - Epoch: 28, loss_train_last_batch: 6.6854, loss_val: 7.3622, best_loss: 7.3622, impatient: 0
+2024-04-08 16:54:14,891 - __main__ - INFO - Epoch: 29, loss_train_last_batch: 6.8483, loss_val: 7.3241, best_loss: 7.3241, impatient: 0
+2024-04-08 16:54:17,564 - __main__ - INFO - Epoch: 30, loss_train_last_batch: 6.5661, loss_val: 7.3170, best_loss: 7.3170, impatient: 0
+2024-04-08 16:54:20,232 - __main__ - INFO - Epoch: 31, loss_train_last_batch: 6.5658, loss_val: 7.2888, best_loss: 7.2888, impatient: 0
+2024-04-08 16:54:22,898 - __main__ - INFO - Epoch: 32, loss_train_last_batch: 6.6652, loss_val: 7.2642, best_loss: 7.2642, impatient: 0
+2024-04-08 16:54:25,565 - __main__ - INFO - Epoch: 33, loss_train_last_batch: 6.5390, loss_val: 7.2405, best_loss: 7.2405, impatient: 0
+2024-04-08 16:54:28,231 - __main__ - INFO - Epoch: 34, loss_train_last_batch: 6.6006, loss_val: 7.2411, best_loss: 7.2405, impatient: 1
+2024-04-08 16:54:30,902 - __main__ - INFO - Epoch: 35, loss_train_last_batch: 6.7413, loss_val: 7.1985, best_loss: 7.1985, impatient: 0
+2024-04-08 16:54:33,574 - __main__ - INFO - Epoch: 36, loss_train_last_batch: 6.6043, loss_val: 7.2070, best_loss: 7.1985, impatient: 1
+2024-04-08 16:54:36,242 - __main__ - INFO - Epoch: 37, loss_train_last_batch: 6.4213, loss_val: 7.1765, best_loss: 7.1765, impatient: 0
+2024-04-08 16:54:38,910 - __main__ - INFO - Epoch: 38, loss_train_last_batch: 6.2292, loss_val: 7.1761, best_loss: 7.1761, impatient: 0
+2024-04-08 16:54:41,583 - __main__ - INFO - Epoch: 39, loss_train_last_batch: 6.5353, loss_val: 7.1546, best_loss: 7.1546, impatient: 0
+2024-04-08 16:54:44,274 - __main__ - INFO - Epoch: 40, loss_train_last_batch: 6.1661, loss_val: 7.1579, best_loss: 7.1546, impatient: 1
+2024-04-08 16:54:46,945 - __main__ - INFO - Epoch: 41, loss_train_last_batch: 6.0181, loss_val: 7.1259, best_loss: 7.1259, impatient: 0
+2024-04-08 16:54:49,619 - __main__ - INFO - Epoch: 42, loss_train_last_batch: 6.0935, loss_val: 7.1259, best_loss: 7.1259, impatient: 0
+2024-04-08 16:54:52,294 - __main__ - INFO - Epoch: 43, loss_train_last_batch: 6.0874, loss_val: 7.1195, best_loss: 7.1195, impatient: 0
+2024-04-08 16:54:54,963 - __main__ - INFO - Epoch: 44, loss_train_last_batch: 6.0260, loss_val: 7.1294, best_loss: 7.1195, impatient: 1
+2024-04-08 16:54:57,630 - __main__ - INFO - Epoch: 45, loss_train_last_batch: 6.1663, loss_val: 7.1192, best_loss: 7.1192, impatient: 0
+2024-04-08 16:55:00,301 - __main__ - INFO - Epoch: 46, loss_train_last_batch: 6.0966, loss_val: 7.0878, best_loss: 7.0878, impatient: 0
+2024-04-08 16:55:02,973 - __main__ - INFO - Epoch: 47, loss_train_last_batch: 6.0370, loss_val: 7.0688, best_loss: 7.0688, impatient: 0
+2024-04-08 16:55:05,649 - __main__ - INFO - Epoch: 48, loss_train_last_batch: 6.1850, loss_val: 7.0639, best_loss: 7.0639, impatient: 0
+2024-04-08 16:55:08,315 - __main__ - INFO - Epoch: 49, loss_train_last_batch: 6.1459, loss_val: 7.0562, best_loss: 7.0562, impatient: 0
+2024-04-08 16:55:10,997 - __main__ - INFO - Epoch: 50, loss_train_last_batch: 5.7182, loss_val: 7.0520, best_loss: 7.0520, impatient: 0
+2024-04-08 16:55:13,670 - __main__ - INFO - Epoch: 51, loss_train_last_batch: 6.0291, loss_val: 7.0470, best_loss: 7.0470, impatient: 0
+2024-04-08 16:55:16,349 - __main__ - INFO - Epoch: 52, loss_train_last_batch: 5.6070, loss_val: 7.0441, best_loss: 7.0441, impatient: 0
+2024-04-08 16:55:19,027 - __main__ - INFO - Epoch: 53, loss_train_last_batch: 5.8031, loss_val: 7.0148, best_loss: 7.0148, impatient: 0
+2024-04-08 16:55:21,708 - __main__ - INFO - Epoch: 54, loss_train_last_batch: 6.0952, loss_val: 7.0107, best_loss: 7.0107, impatient: 0
+2024-04-08 16:55:24,375 - __main__ - INFO - Epoch: 55, loss_train_last_batch: 5.9108, loss_val: 7.0359, best_loss: 7.0107, impatient: 1
+2024-04-08 16:55:27,057 - __main__ - INFO - Epoch: 56, loss_train_last_batch: 5.6883, loss_val: 7.0334, best_loss: 7.0107, impatient: 2
+2024-04-08 16:55:29,741 - __main__ - INFO - Epoch: 57, loss_train_last_batch: 5.7896, loss_val: 6.9858, best_loss: 6.9858, impatient: 0
+2024-04-08 16:55:32,424 - __main__ - INFO - Epoch: 58, loss_train_last_batch: 5.9359, loss_val: 7.0047, best_loss: 6.9858, impatient: 1
+2024-04-08 16:55:35,103 - __main__ - INFO - Epoch: 59, loss_train_last_batch: 5.9724, loss_val: 7.0079, best_loss: 6.9858, impatient: 2
+2024-04-08 16:55:37,787 - __main__ - INFO - Epoch: 60, loss_train_last_batch: 5.7119, loss_val: 6.9996, best_loss: 6.9858, impatient: 3
+2024-04-08 16:55:40,474 - __main__ - INFO - Epoch: 61, loss_train_last_batch: 5.8809, loss_val: 6.9720, best_loss: 6.9720, impatient: 0
+2024-04-08 16:55:43,137 - __main__ - INFO - Epoch: 62, loss_train_last_batch: 5.7820, loss_val: 6.9816, best_loss: 6.9720, impatient: 1
+2024-04-08 16:55:45,804 - __main__ - INFO - Epoch: 63, loss_train_last_batch: 5.4229, loss_val: 7.0000, best_loss: 6.9720, impatient: 2
+2024-04-08 16:55:48,457 - __main__ - INFO - Epoch: 64, loss_train_last_batch: 5.7260, loss_val: 6.9853, best_loss: 6.9720, impatient: 3
+2024-04-08 16:55:51,122 - __main__ - INFO - Epoch: 65, loss_train_last_batch: 5.7980, loss_val: 6.9646, best_loss: 6.9646, impatient: 0
+2024-04-08 16:55:53,772 - __main__ - INFO - Epoch: 66, loss_train_last_batch: 5.8616, loss_val: 6.9651, best_loss: 6.9646, impatient: 1
+2024-04-08 16:55:56,430 - __main__ - INFO - Epoch: 67, loss_train_last_batch: 5.7709, loss_val: 6.9679, best_loss: 6.9646, impatient: 2
+2024-04-08 16:55:59,097 - __main__ - INFO - Epoch: 68, loss_train_last_batch: 5.8216, loss_val: 6.9613, best_loss: 6.9613, impatient: 0
+2024-04-08 16:56:01,762 - __main__ - INFO - Epoch: 69, loss_train_last_batch: 5.4774, loss_val: 6.9541, best_loss: 6.9541, impatient: 0
+2024-04-08 16:56:04,419 - __main__ - INFO - Epoch: 70, loss_train_last_batch: 5.8562, loss_val: 6.9554, best_loss: 6.9541, impatient: 1
+2024-04-08 16:56:07,090 - __main__ - INFO - Epoch: 71, loss_train_last_batch: 5.8070, loss_val: 6.9477, best_loss: 6.9477, impatient: 0
+2024-04-08 16:56:09,753 - __main__ - INFO - Epoch: 72, loss_train_last_batch: 5.8398, loss_val: 6.9425, best_loss: 6.9425, impatient: 0
+2024-04-08 16:56:12,408 - __main__ - INFO - Epoch: 73, loss_train_last_batch: 5.5124, loss_val: 6.9522, best_loss: 6.9425, impatient: 1
+2024-04-08 16:56:15,062 - __main__ - INFO - Epoch: 74, loss_train_last_batch: 5.3481, loss_val: 6.9575, best_loss: 6.9425, impatient: 2
+2024-04-08 16:56:17,731 - __main__ - INFO - Epoch: 75, loss_train_last_batch: 5.6847, loss_val: 6.9346, best_loss: 6.9346, impatient: 0
+2024-04-08 16:56:20,503 - __main__ - INFO - Epoch: 76, loss_train_last_batch: 5.5496, loss_val: 6.9457, best_loss: 6.9346, impatient: 1
+2024-04-08 16:56:23,174 - __main__ - INFO - Epoch: 77, loss_train_last_batch: 5.3671, loss_val: 6.9292, best_loss: 6.9292, impatient: 0
+2024-04-08 16:56:25,848 - __main__ - INFO - Epoch: 78, loss_train_last_batch: 5.4649, loss_val: 6.9348, best_loss: 6.9292, impatient: 1
+2024-04-08 16:56:28,517 - __main__ - INFO - Epoch: 79, loss_train_last_batch: 5.2696, loss_val: 6.9437, best_loss: 6.9292, impatient: 2
+2024-04-08 16:56:31,200 - __main__ - INFO - Epoch: 80, loss_train_last_batch: 5.4796, loss_val: 6.9328, best_loss: 6.9292, impatient: 3
+2024-04-08 16:56:33,854 - __main__ - INFO - Epoch: 81, loss_train_last_batch: 5.7175, loss_val: 6.9447, best_loss: 6.9292, impatient: 4
+2024-04-08 16:56:36,524 - __main__ - INFO - Epoch: 82, loss_train_last_batch: 5.5302, loss_val: 6.9251, best_loss: 6.9251, impatient: 0
+2024-04-08 16:56:39,175 - __main__ - INFO - Epoch: 83, loss_train_last_batch: 5.4936, loss_val: 6.9369, best_loss: 6.9251, impatient: 1
+2024-04-08 16:56:41,843 - __main__ - INFO - Epoch: 84, loss_train_last_batch: 5.4691, loss_val: 6.9359, best_loss: 6.9251, impatient: 2
+2024-04-08 16:56:44,507 - __main__ - INFO - Epoch: 85, loss_train_last_batch: 5.5361, loss_val: 6.9339, best_loss: 6.9251, impatient: 3
+2024-04-08 16:56:47,169 - __main__ - INFO - Epoch: 86, loss_train_last_batch: 5.2857, loss_val: 6.9341, best_loss: 6.9251, impatient: 4
+2024-04-08 16:56:49,833 - __main__ - INFO - Epoch: 87, loss_train_last_batch: 5.3849, loss_val: 6.9517, best_loss: 6.9251, impatient: 5
+2024-04-08 16:56:52,498 - __main__ - INFO - Epoch: 88, loss_train_last_batch: 5.0046, loss_val: 6.9455, best_loss: 6.9251, impatient: 6
+2024-04-08 16:56:55,164 - __main__ - INFO - Epoch: 89, loss_train_last_batch: 5.3483, loss_val: 6.9561, best_loss: 6.9251, impatient: 7
+2024-04-08 16:56:57,816 - __main__ - INFO - Epoch: 90, loss_train_last_batch: 5.1557, loss_val: 6.9303, best_loss: 6.9251, impatient: 8
+2024-04-08 16:57:00,483 - __main__ - INFO - Epoch: 91, loss_train_last_batch: 5.1181, loss_val: 6.9389, best_loss: 6.9251, impatient: 9
+2024-04-08 16:57:03,140 - __main__ - INFO - Epoch: 92, loss_train_last_batch: 5.2105, loss_val: 6.9468, best_loss: 6.9251, impatient: 10
+2024-04-08 16:57:05,803 - __main__ - INFO - Epoch: 93, loss_train_last_batch: 4.8874, loss_val: 6.9523, best_loss: 6.9251, impatient: 11
+2024-04-08 16:57:08,446 - __main__ - INFO - Epoch: 94, loss_train_last_batch: 4.9697, loss_val: 6.9337, best_loss: 6.9251, impatient: 12
+2024-04-08 16:57:11,112 - __main__ - INFO - Epoch: 95, loss_train_last_batch: 5.4074, loss_val: 6.9465, best_loss: 6.9251, impatient: 13
+2024-04-08 16:57:13,751 - __main__ - INFO - Epoch: 96, loss_train_last_batch: 5.0682, loss_val: 6.9444, best_loss: 6.9251, impatient: 14
+2024-04-08 16:57:16,415 - __main__ - INFO - Epoch: 97, loss_train_last_batch: 4.9702, loss_val: 6.9576, best_loss: 6.9251, impatient: 15
+2024-04-08 16:57:19,080 - __main__ - INFO - Epoch: 98, loss_train_last_batch: 5.3409, loss_val: 6.9462, best_loss: 6.9251, impatient: 16
+2024-04-08 16:57:21,747 - __main__ - INFO - Epoch: 99, loss_train_last_batch: 4.9561, loss_val: 6.9424, best_loss: 6.9251, impatient: 17
+2024-04-08 16:57:24,427 - __main__ - INFO - Epoch: 100, loss_train_last_batch: 5.2166, loss_val: 6.9620, best_loss: 6.9251, impatient: 18
+2024-04-08 16:57:27,098 - __main__ - INFO - Epoch: 101, loss_train_last_batch: 5.1019, loss_val: 6.9542, best_loss: 6.9251, impatient: 19
+2024-04-08 16:57:29,756 - __main__ - INFO - Breaking due to early stopping at epoch 101
+2024-04-08 16:58:10,699 - __main__ - INFO - Negative log-likelihood:
+ - Train: 5.189
+ - Val:   6.925
+ - Test:  7.457
+    - Mark NLL: 4.285
+    - Time NLL: 3.172
+2024-04-08 16:58:52,273 - __main__ - INFO - acc@1: 0.330
+2024-04-08 16:58:52,463 - __main__ - INFO - acc@5: 0.581
+2024-04-08 16:58:52,652 - __main__ - INFO - acc@10: 0.606
+2024-04-08 16:58:52,654 - __main__ - INFO - f1_score: 0.231
+2024-04-08 16:58:52,722 - __main__ - INFO - Recall@1: 0.330
+2024-04-08 16:58:52,722 - __main__ - INFO - Recall@5: 0.581
+2024-04-08 16:58:52,722 - __main__ - INFO - Recall@10: 0.606
+2024-04-08 16:58:52,722 - __main__ - INFO - NDCG@10: 0.478
+2024-04-08 16:58:52,722 - __main__ - INFO - MRR@10: 0.436
+2024-04-08 16:58:52,817 - __main__ - INFO - finished...
