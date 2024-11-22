@@ -1,6 +1,6 @@
 # TrajTPP
 
-This repository includes the source codes and experiment results of our current manuscript submitted to IEEE Transactions on Intelligent Transportations, "Inquiring the next location and travel time: a deep learning based temporal point process for vehicle trajectory prediction". 
+This repository includes the source codes and experiment results of our current manuscript submitted to IEEE Internet of Things, "Inquiring the next location and travel time: a deep learning based temporal point process for vehicle trajectory prediction". 
 
 Here, "evaluation - geolife - 5.ipynb" and "./log/" show its prediction performance on the open-source benchmark in [^1]. 
 
